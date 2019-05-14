@@ -1,8 +1,6 @@
 package controllers.general;
 
 import context.ContextHandler;
-import controllers.administrator.AdministratorMainScreenController;
-import controllers.manager.OwnerModuleSelectScreenController;
 import dtos.other.AuthenticationContextDto;
 import entities.Connection;
 import enums.AccountType;
@@ -385,7 +383,7 @@ public class LoginScreenController implements Initializable {
 //        innerLoader.setResources(bundle);
         try {
             Parent innerRoot = innerLoader.load();
-            OwnerModuleSelectScreenController moduleSelectScreenController = innerLoader.getController();
+            //OwnerModuleSelectScreenController moduleSelectScreenController = innerLoader.getController();
 //            mainScreenController.setClient(client);
 //            mainScreenController.setLocalDatabase(localDatabase);
 //            stage.setTitle("PasswordsManager 1.0.0");
@@ -397,11 +395,11 @@ public class LoginScreenController implements Initializable {
             scene.setRoot(innerRoot);
             stage.setScene(scene);
             stage.setMaximized(true);
-            moduleSelectScreenController.setScene(scene);
-            moduleSelectScreenController.setStage(stage);
-            moduleSelectScreenController.setContextHandler(contextHandler);
-            moduleSelectScreenController.initData();
-            moduleSelectScreenController.callPopup(MessageType.CONFIRMATION, "Hello " + contextHandler.getCurrentPerson().getFirstName() + ", enjoy Your work!");
+            //moduleSelectScreenController.setScene(scene);
+            //moduleSelectScreenController.setStage(stage);
+            //moduleSelectScreenController.setContextHandler(contextHandler);
+           // moduleSelectScreenController.initData();
+            //moduleSelectScreenController.callPopup(MessageType.CONFIRMATION, "Hello " + contextHandler.getCurrentPerson().getFirstName() + ", enjoy Your work!");
 
             stage.show();
 
@@ -424,7 +422,7 @@ public class LoginScreenController implements Initializable {
 
         try {
             Parent innerRoot = innerLoader.load();
-            AdministratorMainScreenController controller = innerLoader.getController();
+            //AdministratorMainScreenController controller = innerLoader.getController();
 
             scene.setRoot(innerRoot);
             stage.setScene(scene);

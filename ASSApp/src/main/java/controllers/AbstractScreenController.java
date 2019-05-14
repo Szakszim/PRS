@@ -1,7 +1,6 @@
 package controllers;
 
 import context.ContextHandler;
-import controllers.manager.plants.OwnerPlantsModuleMainScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import lombok.Getter;
@@ -14,8 +13,6 @@ import java.util.ResourceBundle;
 @Getter
 public class AbstractScreenController implements Initializable {
 
-    @FXML
-    public OwnerPlantsModuleMainScreenController mainScreenController;
 
     private ContextHandler contextHandler;
 
