@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ASS.iml" filepath="$PROJECT_DIR$/.idea/ASS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ASSApp/ASSApp.iml" filepath="$PROJECT_DIR$/ASSApp/ASSApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ASSCommon/ASSCommon.iml" filepath="$PROJECT_DIR$/ASSCommon/ASSCommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ASSServer/ASSServer.iml" filepath="$PROJECT_DIR$/ASSServer/ASSServer.iml" />
     </modules>
   </component>
 </project>
