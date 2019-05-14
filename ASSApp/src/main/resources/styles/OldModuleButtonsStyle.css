@@ -1,0 +1,75 @@
+.plants{
+    -fx-text-fill: transparent;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-wrap-text: true;
+
+    -fx-background-image: url('plants_prod_image.png');
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: auto;
+    -fx-background-position: center;
+
+    -fx-height: 100%;
+
+}
+
+.animals{
+    -fx-text-fill: transparent;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-wrap-text: true;
+
+    -fx-background-image: url('animals_prod_image.png');
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: auto;
+    -fx-background-position: center;
+
+    -fx-height: 100%;
+}
+
+.accountancy{
+    -fx-text-fill: transparent;
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-wrap-text: true;
+
+    -fx-background-image: url('accountancy_image.png');
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: auto;
+    -fx-background-position: center;
+
+    -fx-height: 100%;
+}
+
+.plants:hover{
+    -fx-background-image: url('plants_prod_dark_image.png');
+    -fx-text-fill: white;
+}
+
+.animals:hover{
+    -fx-background-image: url('animals_prod_dark_image.png');
+    -fx-text-fill: white;
+}
+
+.accountancy:hover{
+    -fx-background-image: url('accountancy_dark_image.png');
+    -fx-text-fill: white;
+}
+
+.specialRed{
+    -fx-background-color: #ff0000;
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    /*-fx-font: Calibri Bold;*/
+}
+.specialRed:hover{
+    -fx-opacity:0.9;
+}

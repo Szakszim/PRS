@@ -1,0 +1,101 @@
+/*.root{*/
+    /*-fx-background-color: green;*/
+    /*-fx-base: yellow;!*(0,0,0,.01);*!*/
+    /*-fx-body-color: red;*/
+/*}*/
+
+.spinner{
+    -fx-background-color: transparent;
+    -fx-base: transparent;
+    -fx-text-fill: white;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: gray;
+}
+
+.spinner .text-field{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-insets: 0 -1 0 -1;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: gray;
+}
+
+
+.spinner:focused{
+    -fx-background-color: transparent;/*rgba(0,0,0,.0);*/
+    -fx-base: transparent;/*(0,0,0,.01);*/
+    -fx-text-fill: white;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: gray;
+}
+
+/*.spinner:default{*/
+    /*-fx-background-color: red;!*rgba(0,0,0,.0);*!*/
+    /*-fx-base: green;!*rgba(0,0,0,.01);*!*/
+    /*-fx-border-color: red;*/
+    /*-fx-body-color: yellow;*/
+/*}*/
+
+.spinner-content{
+    -fx-background-color: red;/*rgba(0,0,0,.0);*/
+    -fx-base: green;/*rgba(0,0,0,.01);*/
+    -fx-border-color: red;
+    -fx-body-color: yellow;
+    -fx-text-fill: white;
+}
+
+/*.spinner-content:focused{*/
+    /*-fx-background-color: red;!*rgba(0,0,0,.0);*!*/
+    /*-fx-base: green;!*rgba(0,0,0,.01);*!*/
+    /*-fx-border-color: red;*/
+    /*-fx-body-color: yellow;*/
+/*}*/
+
+/*.spinner-arrow:hover{*/
+    /*!*-fx-background-color: green;*!*/
+    /*-fx-background-color: red;!*rgba(0,0,0,.0);*!*/
+    /*-fx-base: green;!*rgba(0,0,0,.01);*!*/
+    /*-fx-text-fill: black;*/
+/*}*/
+/*.spinner-arrow:focused{*/
+    /*!*-fx-background-color: green;*!*/
+    /*-fx-background-color: red;!*rgba(0,0,0,.0);*!*/
+    /*-fx-base: green;!*rgba(0,0,0,.01);*!*/
+    /*-fx-text-fill: black;*/
+    /*-fx-border-color: transparent;*/
+/*}*/
+
+.increment-arrow-button, .decrement-arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-text-fill: black;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: gray;
+}
+
+.increment-arrow-button:hover, .decrement-arrow-button:hover {
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-text-fill: black;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: gray;
+
+}
+
+.increment-arrow, .decrement-arrow {
+    -fx-background-color: yellow;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 20px;
+    -fx-max-width: 5px;
+    -fx-max-height: 5px;
+}
+
+.increment-arrow:hover, .decrement-arrow:hover {
+    -fx-background-color: red;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 20px;
+    -fx-max-width: 5px;
+    -fx-max-height: 5px;
+}

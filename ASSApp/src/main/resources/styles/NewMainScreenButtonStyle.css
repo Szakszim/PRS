@@ -1,0 +1,122 @@
+.menu-bar{
+    -fx-background-color: rgba(0,0,0,.5);
+    -fx-border-style: solid;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: white;
+}
+
+.background{
+    -fx-background-color: rgba(0,0,0,.3);
+}
+
+.small-menu-button{
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.small-menu-button:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+}
+
+.menu-button-separator{
+    -fx-border-insets: -1,-1,-1,0;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.general-content-menu-button{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.general-content-menu-button:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white white white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.general-content-menu-button:showing{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white white white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.menu-button{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.menu-button:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white green white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.menu-button:showing{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white green white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.animals-content-menu-button{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.animals-content-menu-button:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white yellow white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.animals-content-menu-button:showing{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white yellow white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.machinery-content-menu-button{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.machinery-content-menu-button:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white blue white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.machinery-content-menu-button:showing{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white blue white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}

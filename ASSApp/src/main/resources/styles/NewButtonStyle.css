@@ -1,0 +1,159 @@
+.small-menu-button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size:13px;
+
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.small-menu-button:hover{
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.menu-button{
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.menu-button:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 4 0;
+    -fx-border-color: white white green white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.menu-button:showing{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-width: 0 1 8 0;
+    -fx-border-color: white white green white;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.menu-button-separator{
+    -fx-border-insets: -1,-1,-1,0;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: white;
+}
+
+.button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size:13px;
+
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.button:hover{
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.popup-button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size:15px;
+
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(0,0,0,0.01);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.popup-button:hover{
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-border-style: solid;
+    -fx-border-width: 2 2 2 2;
+    -fx-border-color: white;
+}
+
+.label-button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: rgba(0,0,0,0);
+}
+
+.label-button:hover{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-background-color: rgba(0,0,0,0);
+    -fx-border-style: solid;
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: rgba(0,0,0,0);
+}
+
+.module-button-plants, .module-button-animals, .module-button-machines, .module-button-accountance{
+    -fx-background-color: rgba(0,0,0,.3);
+    -fx-background-radius: 0,0,0;
+    -fx-border-style: solid;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-border-color: gray;
+}
+
+.module-button-plants:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-background-radius: 0,0,0;
+    -fx-border-width: 1 1 4 1;
+    -fx-border-color: gray gray green gray;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.module-button-animals:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-background-radius: 0,0,0;
+    -fx-border-width: 1 1 4 1;
+    -fx-border-color: gray gray yellow gray;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.module-button-machines:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-background-radius: 0,0,0;
+    -fx-border-width: 1 1 4 1;
+    -fx-border-color: gray gray blue gray;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}
+
+.module-button-accountance:hover{
+    -fx-background-color: rgba(255,255,255,.3);
+    -fx-background-radius: 0,0,0;
+    -fx-border-width: 1 1 4 1;
+    -fx-border-color: gray gray red gray;
+    -fx-border-insets: -1,-1,-1,-1;
+    -fx-position-shape: absolute;
+}

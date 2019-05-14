@@ -1,0 +1,36 @@
+.total-black-background{
+    -fx-background-color: rgba(0,0,0,1);
+}
+
+.total-white-background{
+    -fx-background-color: rgba(0,0,0,1);
+}
+
+.half-black-background{
+    -fx-background-color: rgba(0,0,0,.3);
+}
+.half-white-background{
+    -fx-background-color: rgba(255,255,255,.3);
+}
+
+.transparent-background{
+    -fx-background-color: transparent;
+}
+
+.general-content-background{
+    -fx-background-color: rgba(0,0,0,.3);
+    -fx-border-width: 1 1 8 1;
+    -fx-border-color: gray gray white gray;
+}
+
+.plants-content-background{
+    -fx-background-color: rgba(0,0,0,.3);
+    -fx-border-width: 1 1 8 1;
+    -fx-border-color: gray gray green gray;
+}
+
+.animals-content-background{
+    -fx-background-color: rgba(0,0,0,.3);
+    -fx-border-width: 1 1 8 1;
+    -fx-border-color: gray gray yellow gray;
+}

@@ -1,0 +1,10 @@
+.standardContextLabel{
+    -fx-background-color: #dddddd;
+    -fx-border-color: #bfbfbf;
+    -fx-background-radius: 0,0,0;
+    -fx-background-insets: 0,0,0;
+    -fx-text-fill: black;
+}
+.standardContextLabel:hover{
+    -fx-opacity:1;
+}

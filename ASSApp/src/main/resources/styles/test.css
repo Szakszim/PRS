@@ -1,0 +1,68 @@
+.button{
+    -fx-padding: 20 20 20 20;
+    -fx-background-color: #5893D4;
+    -fx-pref-width: 100;
+    -fx-content-display: top;
+
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+#anchorPane{
+    -fx-background-color: #F7B633;
+}
+
+#mainMenuBar{
+    -fx-background-color: #5893D4;
+}
+
+.button:hover{
+    -fx-background-color: #1F3C88;
+    -fx-cursor: hand;
+}
+.button:pressed{
+    -fx-background-color: #8AB3E0;
+}
+
+
+
+
+
+#animalsSliderBar{
+    -fx-background-color: #1F3C88;
+    -fx-cursor: hand;
+}
+
+#animalsSliderBar .button{
+    -fx-background-color: #1F3C88;
+    -fx-cursor: hand;
+}
+
+#animalsSliderBar .button:hover{
+    -fx-background-color: #070D59;
+    -fx-cursor: hand;
+}
+
+#animalsSliderBar .button:pressed{
+    -fx-background-color: #8AB3E0;
+}
+#cropsSlideBar{
+    -fx-background-color: #1F3C88;
+    -fx-cursor: hand;
+}
+
+#cropsSlideBar .button{
+    -fx-background-color: #1F3C88;
+    -fx-cursor: hand;
+}
+
+#cropsSlideBar .button:hover{
+    -fx-background-color: #070D59;
+    -fx-cursor: hand;
+}
+
+#cropsSlideBar .button:pressed{
+    -fx-background-color: #8AB3E0;
+}
+
