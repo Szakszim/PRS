@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.MainScreenController">
+   <children>
+      <TabPane maxHeight="500.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Sprawdzenie listy obecności">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="14.0" layoutY="14.0" spacing="10.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <ChoiceBox fx:id="subjectChoiceBox" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="roomChoiceBox" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="hourChoiceBox" prefWidth="150.0" />
+                                    <DatePicker fx:id="datePicker" />
+                                    <Button fx:id="startListeningButton" mnemonicParsing="false" onAction="#startListeningButtonAction" text="Sprawdź obecność" />
+                                 </children>
+                              </HBox>
+                              <TableView fx:id="presenceTable">
+                                <columns>
+                                  <TableColumn fx:id="cardIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="ID karty" />
+                                  <TableColumn fx:id="studentIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Indeks studenta" />
+                                    <TableColumn fx:id="nameColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Imię" />
+                                    <TableColumn fx:id="surnameColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Nazwisko" />
+                                    <TableColumn fx:id="facultyColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Wydział" />
+                                    <TableColumn fx:id="deanGroupColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Grupa dziekańska" />
+                                    <TableColumn fx:id="emailColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Adres email" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Historia zajęć">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <ChoiceBox fx:id="subjectHistoryChoiceBox" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="dateHistoryChoiceBox" prefWidth="150.0" />
+                                 </children>
+                              </HBox>
+                              <TableView fx:id="historyTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="777.0">
+                                 <columns>
+                                    <TableColumn fx:id="dateHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Data" />
+                                    <TableColumn fx:id="hourHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Godzina" />
+                                    <TableColumn fx:id="subjectHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Przedmiot" />
+                                    <TableColumn fx:id="frequencyColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Ilość osób obecnych" />
+                                    <TableColumn fx:id="roomColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Sala" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab disable="true" text="Statystyki studenta">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                           <children>
+                              <HBox spacing="10.0">
+                                 <children>
+                                    <ChoiceBox fx:id="semesterStatsChoiceBox" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="subjectStatsChoiceBox" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="deanGroupStatsChoiceBox1" prefWidth="150.0" />
+                                    <ChoiceBox fx:id="studentStatsChoiceBox" prefWidth="150.0" />
+                                 </children>
+                              </HBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab disable="true" text="Lista studentów">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

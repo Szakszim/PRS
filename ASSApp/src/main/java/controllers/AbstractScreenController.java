@@ -1,7 +1,6 @@
 package controllers;
 
-import context.ContextHandler;
-import javafx.fxml.FXML;
+
 import javafx.fxml.Initializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import java.util.ResourceBundle;
 public class AbstractScreenController implements Initializable {
 
 
-    private ContextHandler contextHandler;
+//    private ContextHandler contextHandler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
