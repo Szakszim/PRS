@@ -46,7 +46,6 @@ public class LoginScreenController {
     }
 
     private boolean validateData() {
-//        return eMailField.getText().equals("imie.nazwisko@put.poznan.pl") && passwordField.getText().equals("123");
-        return true;
+        return eMailField.getText().equals("imie.nazwisko@put.poznan.pl") && passwordField.getText().equals("123");
     }
 }

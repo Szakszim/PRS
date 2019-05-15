@@ -116,8 +116,6 @@ public class MainScreenController implements Initializable {
 
     private Stage stage;
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listeningButtonPressed = false;
@@ -138,93 +136,6 @@ public class MainScreenController implements Initializable {
         filterHistoryTable();
         configureHistoryTable();
 
-
-    }
-
-    @FXML
-    void startListeningButtonAction() {
-        listeningButtonPressed = !listeningButtonPressed;
-
-        if (listeningButtonPressed) {
-            CardReaderThread cardReaderThread = new CardReaderThread();
-            Thread readerThread = new Thread(cardReaderThread);
-            readerThread.start();
-            startListeningButton.setText("Wyślij listę");
-        } else {
-            CardReaderThread.setRunning(new AtomicBoolean(Boolean.FALSE));
-            String date = datePicker.getValue().format(DateTimeFormatter.ISO_DATE);
-
-            boolean thereIsnt=true;
-            for (String dateList: dateList) {
-                if(dateList.equals(date)){
-                    thereIsnt=false;
-                }
-            }
-            if(thereIsnt) {
-                dateList.add(date);
-                dateHistoryChoiceBox.setItems(FXCollections.observableArrayList(dateList));
-                dateHistoryChoiceBox.getSelectionModel().select(0);
-            }
-
-            Lesson lesson = new Lesson(subjectChoiceBox.getValue(), roomChoiceBox.getValue(), hourChoiceBox.getValue(), date, presenceTable.getItems().size());
-            lessons.add(lesson);
-
-            students.clear();
-            startListeningButton.setText("Sprawdź obecność");
-        }
-
-    }
-
-    private void configureHistoryTable() {;
-        historyTable.setOnMouseClicked(mouseEvent -> {
-            if(mouseEvent.getClickCount()==2){
-                Parent root = null;
-                try {
-                    root = FXMLLoader.load(this.getClass().getResource("/views/general/DetailedStudentsPresenceScreen.fxml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene scene = new Scene(root);
-                stage = new Stage();
-                stage.setTitle("Przegląd szczegółowy");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setScene(scene);
-                stage.setResizable(false);
-                stage.show();
-            }
-        });
-    }
-
-    private void filterHistoryTable() {
-
-        dateHistoryChoiceBox.valueProperty().addListener((Observable) -> {
-            filterHistory();
-        });
-
-        subjectHistoryChoiceBox.valueProperty().addListener((Observable) -> {
-            filterHistory();
-        });
-
-    }
-
-    private void filterHistory() {
-        if (dateHistoryChoiceBox.getSelectionModel().isEmpty() || subjectHistoryChoiceBox.getSelectionModel().isEmpty()) {
-            return;
-        }
-
-        ObservableList<Lesson> filtered = FXCollections.observableArrayList(lessons);
-
-        if (!dateHistoryChoiceBox.getValue().equals("")) {
-            String date = dateHistoryChoiceBox.getValue();
-            filtered = filtered.filtered(lesson -> lesson.getDate().equals(date));
-        }
-
-        if (!subjectHistoryChoiceBox.getValue().equals("")) {
-            String subject = subjectHistoryChoiceBox.getValue();
-            filtered = filtered.filtered(lesson -> lesson.getSubject().equals(subject));
-        }
-
-        historyTable.setItems(filtered);
     }
 
     private void initializeObservableArrays() {
@@ -241,26 +152,6 @@ public class MainScreenController implements Initializable {
         subjectHistoryChoiceBox.getSelectionModel().select(0);
         dateHistoryChoiceBox.getSelectionModel().select(0);
     }
-
-    public static void addRow(String cardId) {
-        boolean registeredStudent = studentHashMap.containsKey(cardId);
-        if(registeredStudent==false){
-            System.out.println("Dodaj nowego studenta");
-            return;
-        }
-        for (Map.Entry<String, Student> entry : studentHashMap.entrySet()) {
-            if (entry.getKey().equals(cardId)) {
-                Student student = entry.getValue();
-                for (Student student_in_list : students) {
-                    if (student_in_list.getAlbumNumber() == student.getAlbumNumber()) {
-                        return;
-                    }
-                }
-                students.add(student);
-            }
-        }
-    }
-
 
     private void initializeColumns() {
         cardIdColumn.setCellValueFactory(
@@ -309,5 +200,137 @@ public class MainScreenController implements Initializable {
     private void initializeStudentsData() {
         studentHashMap = InitializeStudents.initializeStudents();
     }
+
+    private void filterHistoryTable() {
+
+        dateHistoryChoiceBox.valueProperty().addListener((Observable) -> {
+            filterHistory();
+        });
+
+        subjectHistoryChoiceBox.valueProperty().addListener((Observable) -> {
+            filterHistory();
+        });
+
+    }
+
+    private void filterHistory() {
+        if (dateHistoryChoiceBox.getSelectionModel().isEmpty() || subjectHistoryChoiceBox.getSelectionModel().isEmpty()) {
+            return;
+        }
+
+        ObservableList<Lesson> filtered = FXCollections.observableArrayList(lessons);
+
+        if (!dateHistoryChoiceBox.getValue().equals("")) {
+            String date = dateHistoryChoiceBox.getValue();
+            filtered = filtered.filtered(lesson -> lesson.getDate().equals(date));
+        }
+
+        if (!subjectHistoryChoiceBox.getValue().equals("")) {
+            String subject = subjectHistoryChoiceBox.getValue();
+            filtered = filtered.filtered(lesson -> lesson.getSubject().equals(subject));
+        }
+
+        historyTable.setItems(filtered);
+    }
+
+    private void configureHistoryTable() {
+        ;
+        historyTable.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getClickCount() == 2) {
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(this.getClass().getResource("/views/general/DetailedStudentsPresenceScreen.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(root);
+                stage = new Stage();
+                stage.setTitle("Przegląd szczegółowy");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
+    }
+
+    @FXML
+    void startListeningButtonAction() {
+
+        if(checkIfFieldsAreEmpty()!=true){
+
+            listeningButtonPressed = !listeningButtonPressed;
+
+            if (listeningButtonPressed) {
+                setDisableFields(true);
+                CardReaderThread cardReaderThread = new CardReaderThread();
+                Thread readerThread = new Thread(cardReaderThread);
+                readerThread.start();
+                startListeningButton.setText("Wyślij listę");
+            } else {
+                setDisableFields(false);
+                CardReaderThread.setRunning(new AtomicBoolean(Boolean.FALSE));
+                String date = datePicker.getValue().format(DateTimeFormatter.ISO_DATE);
+
+                boolean checkIfDateIsInDatabase = true;
+                for (String dateList : dateList) {
+                    if (dateList.equals(date)) {
+                        checkIfDateIsInDatabase = false;
+                    }
+                }
+                if (checkIfDateIsInDatabase) {
+                    dateList.add(date);
+                    dateHistoryChoiceBox.setItems(FXCollections.observableArrayList(dateList));
+                    dateHistoryChoiceBox.getSelectionModel().select(0);
+                }
+
+
+                Lesson lesson = new Lesson(subjectChoiceBox.getValue(), roomChoiceBox.getValue(), hourChoiceBox.getValue(), date, presenceTable.getItems().size());
+                lessons.add(lesson);
+
+                students.clear();
+                startListeningButton.setText("Sprawdź obecność");
+            }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Wprowadź wymagane dane");
+            alert.showAndWait();
+        }
+    }
+
+    public Boolean checkIfFieldsAreEmpty(){
+        return subjectChoiceBox.getSelectionModel().isEmpty() ||
+                roomChoiceBox.getSelectionModel().isEmpty() ||
+                hourChoiceBox.getSelectionModel().isEmpty() ||
+                datePicker.getValue()==null;
+    }
+
+    public void setDisableFields(Boolean bool){
+        subjectChoiceBox.setDisable(bool);
+        roomChoiceBox.setDisable(bool);
+        hourChoiceBox.setDisable(bool);
+        datePicker.setDisable(bool);
+    }
+
+    public static void addRow(String cardId) {
+        boolean registeredStudent = studentHashMap.containsKey(cardId);
+        if (registeredStudent == false) {
+            System.out.println("Dodaj nowego studenta");
+            return;
+        }
+        for (Map.Entry<String, Student> entry : studentHashMap.entrySet()) {
+            if (entry.getKey().equals(cardId)) {
+                Student student = entry.getValue();
+                for (Student student_in_list : students) {
+                    if (student_in_list.getAlbumNumber() == student.getAlbumNumber()) {
+                        return;
+                    }
+                }
+                students.add(student);
+            }
+        }
+    }
+
 }
 
