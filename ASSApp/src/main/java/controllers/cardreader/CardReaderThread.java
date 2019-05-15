@@ -1,16 +1,20 @@
 package controllers.cardreader;
 
 import controllers.general.MainScreenController;
+import controllers.temporary.InitializeStudents;
+import controllers.temporary.Student;
+import javafx.stage.Stage;
 
 import javax.smartcardio.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CardReaderThread implements Runnable {
 
     public static AtomicBoolean running;
-
+    private Stage stage;
     public static void setRunning(AtomicBoolean running) {
         CardReaderThread.running = running;
     }
@@ -38,11 +42,11 @@ public class CardReaderThread implements Runnable {
                 byte[] data = resp.getData();
                 byte[] ICSerialNumber = Arrays.copyOfRange(data, 15, 19);
 
-
-                if (/*database.jest*/ 1 == 1) {
+                HashMap<String, Student> studentHashMap = InitializeStudents.initializeStudents();
+                if (/*database.jest*/ studentHashMap.containsKey(hexToString(ICSerialNumber))) {
                     MainScreenController.addRow(hexToString(ICSerialNumber));
                 } else {
-
+                    System.out.println("Musisz dodać studenta");
                 }
                 while (reader.isCardPresent()) {
                 }
@@ -52,6 +56,9 @@ public class CardReaderThread implements Runnable {
             e.printStackTrace();
         }
     }
+
+
+
     private String hexToString(final byte[] data) {
         char[] hexValue = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         int length = data.length;

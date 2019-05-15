@@ -8,10 +8,16 @@ import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -100,14 +106,40 @@ public class MainScreenController implements Initializable {
     static ObservableList<Student> students;
     static ObservableList<Lesson> lessons;
 
-    private ArrayList<String> subjectList = new ArrayList<>(Arrays.asList("AWSI", "IO", "PT", "PZ", "WTI"));
+    private ArrayList<String> subjectList = new ArrayList<>(Arrays.asList("", "AWSI", "IO", "PT", "PZ", "WTI"));
     private ArrayList<String> roomList = new ArrayList<>(Arrays.asList(
             "E 210", "E 217", "E 110", "BM A1", "BM A2", "M 215", "M 216", "CW 4"));
     private ArrayList<String> hourList = new ArrayList<>(Arrays.asList("8:00", "9:45", "11:45", "13:30", "15:10", "16:45"));
     private ArrayList<String> dateList = new ArrayList<>(Arrays.asList(""));
 
-
     private boolean listeningButtonPressed;
+
+    private Stage stage;
+
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        listeningButtonPressed = false;
+
+        initializeStudentsData();
+        initializeColumns();
+        initializeChoicebox();
+        initializeObservableArrays();
+
+        students.addListener((InvalidationListener) observable -> {
+            presenceTable.setItems(students);
+        });
+        lessons.addListener((InvalidationListener) observable -> {
+            historyTable.setItems(lessons);
+
+        });
+
+        filterHistoryTable();
+        configureHistoryTable();
+
+
+    }
 
     @FXML
     void startListeningButtonAction() {
@@ -120,43 +152,82 @@ public class MainScreenController implements Initializable {
             startListeningButton.setText("Wyślij listę");
         } else {
             CardReaderThread.setRunning(new AtomicBoolean(Boolean.FALSE));
-
             String date = datePicker.getValue().format(DateTimeFormatter.ISO_DATE);
-            dateList.add(date);
-            dateHistoryChoiceBox.setItems(FXCollections.observableArrayList(dateList));
+
+            boolean thereIsnt=true;
+            for (String dateList: dateList) {
+                if(dateList.equals(date)){
+                    thereIsnt=false;
+                }
+            }
+            if(thereIsnt) {
+                dateList.add(date);
+                dateHistoryChoiceBox.setItems(FXCollections.observableArrayList(dateList));
+                dateHistoryChoiceBox.getSelectionModel().select(0);
+            }
+
             Lesson lesson = new Lesson(subjectChoiceBox.getValue(), roomChoiceBox.getValue(), hourChoiceBox.getValue(), date, presenceTable.getItems().size());
             lessons.add(lesson);
 
-            students.clear(); // jak to nie wystarczy, to nie wiem co pomoze
+            students.clear();
             startListeningButton.setText("Sprawdź obecność");
         }
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        listeningButtonPressed = false;
-        initializeStudentsData();
-        initializeColumns();
-        initializeChoicebox();
-        initializeObservableArrays();
-        students.addListener((InvalidationListener) observable -> {
-            presenceTable.setItems(students);
-        });
-        lessons.addListener((InvalidationListener) observable -> {
-            historyTable.setItems(lessons);
-
-        });
-
-        //TODO: trzeba zrobić dla obu pól, jeśli jedno z dwóch się zmieni
-        dateHistoryChoiceBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(newValue != null && newValue.equals("")){
-                historyTable.setItems(lessons);
-            }else {
-                ObservableList<Lesson> filtered = lessons.filtered(lesson -> lesson.getDate().equals(newValue));
-                historyTable.setItems(filtered);
+    private void configureHistoryTable() {;
+        historyTable.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getClickCount()==2){
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load(this.getClass().getResource("/views/general/DetailedStudentsPresenceScreen.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(root);
+                stage = new Stage();
+                stage.setTitle("Przegląd szczegółowy");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.show();
             }
         });
+    }
+
+    private void filterHistoryTable() {
+
+        dateHistoryChoiceBox.valueProperty().addListener((Observable) -> {
+            filterHistory();
+        });
+
+        subjectHistoryChoiceBox.valueProperty().addListener((Observable) -> {
+            filterHistory();
+        });
+
+    }
+
+    private void filterHistory() {
+        if (dateHistoryChoiceBox.getSelectionModel().isEmpty() || subjectHistoryChoiceBox.getSelectionModel().isEmpty()) {
+            return;
+        }
+
+        ObservableList<Lesson> filtered = FXCollections.observableArrayList(lessons);
+
+
+        if (!dateHistoryChoiceBox.getValue().equals("")) {
+            String date = dateHistoryChoiceBox.getValue();
+            filtered = filtered.filtered(lesson -> lesson.getDate().equals(date));
+        }
+
+        if (!subjectHistoryChoiceBox.getValue().equals("")) {
+            String subject = subjectHistoryChoiceBox.getValue();
+            filtered = filtered.filtered(lesson -> lesson.getSubject().equals(subject));
+        }
+
+        historyTable.setItems(filtered);
+
+
     }
 
     private void initializeObservableArrays() {
@@ -168,13 +239,10 @@ public class MainScreenController implements Initializable {
         subjectChoiceBox.getItems().addAll(subjectList);
         roomChoiceBox.getItems().addAll(roomList);
         hourChoiceBox.getItems().addAll(hourList);
-        subjectChoiceBox.getSelectionModel().selectFirst();
-        roomChoiceBox.getSelectionModel().selectFirst();
-        hourChoiceBox.getSelectionModel().selectFirst();
         subjectHistoryChoiceBox.getItems().addAll(subjectList);
         dateHistoryChoiceBox.getItems().addAll(dateList);
-        subjectHistoryChoiceBox.getSelectionModel().selectFirst();
-        dateHistoryChoiceBox.getSelectionModel().selectFirst();
+        subjectHistoryChoiceBox.getSelectionModel().select(0);
+        dateHistoryChoiceBox.getSelectionModel().select(0);
     }
 
     public static void addRow(String cardId) {
@@ -188,10 +256,11 @@ public class MainScreenController implements Initializable {
                 }
                 students.add(student);
             } else {
-                // TODO: pojaw okienko, nowy student
+                System.out.println("dodaj nowego studenta");
             }
         }
     }
+
 
     private void initializeColumns() {
         cardIdColumn.setCellValueFactory(
@@ -241,7 +310,6 @@ public class MainScreenController implements Initializable {
 
     private void initializeStudentsData() {
         studentHashMap = InitializeStudents.initializeStudents();
-
     }
 }
 
