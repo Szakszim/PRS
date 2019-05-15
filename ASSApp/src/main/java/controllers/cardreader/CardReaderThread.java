@@ -29,7 +29,7 @@ public class CardReaderThread implements Runnable {
 
             CardTerminal reader = terminals.get(0);
 
-            System.out.println("zaczynam nasluchiwanie");
+            System.out.println("Zaczynam nasluchiwanie");
 
             while (running.get()) {
                 while (!reader.isCardPresent()) {
@@ -42,12 +42,8 @@ public class CardReaderThread implements Runnable {
                 byte[] data = resp.getData();
                 byte[] ICSerialNumber = Arrays.copyOfRange(data, 15, 19);
 
-                HashMap<String, Student> studentHashMap = InitializeStudents.initializeStudents();
-                if (/*database.jest*/ studentHashMap.containsKey(hexToString(ICSerialNumber))) {
-                    MainScreenController.addRow(hexToString(ICSerialNumber));
-                } else {
-                    System.out.println("Musisz dodać studenta");
-                }
+                MainScreenController.addRow(hexToString(ICSerialNumber));
+
                 while (reader.isCardPresent()) {
                 }
             }

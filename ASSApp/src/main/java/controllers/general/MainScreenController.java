@@ -214,7 +214,6 @@ public class MainScreenController implements Initializable {
 
         ObservableList<Lesson> filtered = FXCollections.observableArrayList(lessons);
 
-
         if (!dateHistoryChoiceBox.getValue().equals("")) {
             String date = dateHistoryChoiceBox.getValue();
             filtered = filtered.filtered(lesson -> lesson.getDate().equals(date));
@@ -226,8 +225,6 @@ public class MainScreenController implements Initializable {
         }
 
         historyTable.setItems(filtered);
-
-
     }
 
     private void initializeObservableArrays() {
@@ -246,17 +243,20 @@ public class MainScreenController implements Initializable {
     }
 
     public static void addRow(String cardId) {
+        boolean registeredStudent = studentHashMap.containsKey(cardId);
+        if(registeredStudent==false){
+            System.out.println("Dodaj nowego studenta");
+            return;
+        }
         for (Map.Entry<String, Student> entry : studentHashMap.entrySet()) {
             if (entry.getKey().equals(cardId)) {
                 Student student = entry.getValue();
                 for (Student student_in_list : students) {
                     if (student_in_list.getAlbumNumber() == student.getAlbumNumber()) {
-                        break;
+                        return;
                     }
                 }
                 students.add(student);
-            } else {
-                System.out.println("dodaj nowego studenta");
             }
         }
     }
@@ -284,8 +284,6 @@ public class MainScreenController implements Initializable {
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<Student, String>("eMail")
         );
-
-        //
 
         subjectHistoryColumn.setCellValueFactory(
                 new PropertyValueFactory<Lesson, String>("subject")
