@@ -30,13 +30,13 @@ public class CardController {
     }
 
     @GetMapping(value = "/card/{id}")
-    public CardDto getCard(@PathVariable("id") Integer id) {
+    public CardDto getCard(@PathVariable("id") String id) {
         return cardRepository.findCardById(id);
     }
 
     @Transactional
     @DeleteMapping(value = "/card/{id}")
-    public void deleteCard(@PathVariable("id") Integer id) {
+    public void deleteCard(@PathVariable("id") String id) {
         cardRepository.deleteCardById(id);
     }
 

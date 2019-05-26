@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CardRepository extends JpaRepository<Card, Integer> {
-    CardDto findCardById(Integer id);
+public interface CardRepository extends JpaRepository<Card, String> {
+    CardDto findCardById(String id);
 
-    void deleteCardById(Integer id);
+    void deleteCardById(String id);
 
     @Query("SELECT NEW dtos.CardDto(c) FROM Card c")
     List<CardDto> findAllCardsAsDto();

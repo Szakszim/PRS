@@ -23,7 +23,7 @@ public class CardRequest {
         return response.getBody();
     }
 
-    public CardDto get(Integer id) {
+    public CardDto get(String id) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<CardDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/card/" + id, CardDto.class);
         return responseEntity.getBody();

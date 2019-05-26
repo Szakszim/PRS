@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CardDto {
-    private Integer id;
+    private String id;
     private Student student;
 
     public CardDto(Card card) {

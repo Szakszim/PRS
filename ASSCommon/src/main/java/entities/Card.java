@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Card {
     @Id
     @Column(name = "id")
-    private Integer id;
+    private String id;
     @OneToOne()
     @JoinColumn(name = "student_id")
     private Student student;
