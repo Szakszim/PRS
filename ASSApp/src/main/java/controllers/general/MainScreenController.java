@@ -1,5 +1,6 @@
 package controllers.general;
 
+import context.ContextHandler;
 import controllers.cardreader.CardReaderThread;
 import controllers.temporary.InitializeStudents;
 import controllers.temporary.Lesson;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,6 +26,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainScreenController implements Initializable {
+
+    @FXML
+    private Text loggedText;
 
     @FXML
     private TableView historyTable;
@@ -124,18 +129,18 @@ public class MainScreenController implements Initializable {
         initializeColumns();
         initializeChoicebox();
         initializeObservableArrays();
+        initializeLogged();
 
-        students.addListener((InvalidationListener) observable -> {
-            presenceTable.setItems(students);
-        });
-        lessons.addListener((InvalidationListener) observable -> {
-            historyTable.setItems(lessons);
-
-        });
+        students.addListener((InvalidationListener) observable -> presenceTable.setItems(students));
+        lessons.addListener((InvalidationListener) observable -> historyTable.setItems(lessons));
 
         filterHistoryTable();
         configureHistoryTable();
 
+    }
+
+    private void initializeLogged() {
+        loggedText.setText("Zalogowany jako: " + ContextHandler.getLecturerDto().getFirstName() + " " + ContextHandler.getLecturerDto().getLastName());
     }
 
     private void initializeObservableArrays() {
@@ -234,7 +239,6 @@ public class MainScreenController implements Initializable {
     }
 
     private void configureHistoryTable() {
-        ;
         historyTable.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
                 Parent root = null;
@@ -299,14 +303,14 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    public Boolean checkIfFieldsAreEmpty(){
+    private Boolean checkIfFieldsAreEmpty() {
         return subjectChoiceBox.getSelectionModel().isEmpty() ||
                 roomChoiceBox.getSelectionModel().isEmpty() ||
                 hourChoiceBox.getSelectionModel().isEmpty() ||
                 datePicker.getValue()==null;
     }
 
-    public void setDisableFields(Boolean bool){
+    private void setDisableFields(Boolean bool) {
         subjectChoiceBox.setDisable(bool);
         roomChoiceBox.setDisable(bool);
         hourChoiceBox.setDisable(bool);
@@ -315,7 +319,7 @@ public class MainScreenController implements Initializable {
 
     public static void addRow(String cardId) {
         boolean registeredStudent = studentHashMap.containsKey(cardId);
-        if (registeredStudent == false) {
+        if (!registeredStudent) {
             System.out.println("Dodaj nowego studenta");
             return;
         }
@@ -323,7 +327,7 @@ public class MainScreenController implements Initializable {
             if (entry.getKey().equals(cardId)) {
                 Student student = entry.getValue();
                 for (Student student_in_list : students) {
-                    if (student_in_list.getAlbumNumber() == student.getAlbumNumber()) {
+                    if (student_in_list.getAlbumNumber().equals(student.getAlbumNumber())) {
                         return;
                     }
                 }

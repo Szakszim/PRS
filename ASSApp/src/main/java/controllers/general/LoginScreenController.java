@@ -1,8 +1,11 @@
 package controllers.general;
 
+import context.ContextHandler;
+import dtos.LecturerDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -10,10 +13,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import requests.LecturerRequest;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginScreenController {
+public class LoginScreenController implements Initializable {
 
 
     @FXML
@@ -23,10 +29,25 @@ public class LoginScreenController {
     @FXML
     private PasswordField passwordField;
 
+    private LecturerRequest lecturerRequest;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeRequests();
+    }
+
+    private void initializeRequests() {
+        lecturerRequest = new LecturerRequest();
+    }
+
     @FXML
     public void onLoginButtonAction(ActionEvent actionEvent) throws IOException {
 
-        if(validateData()){
+        String email = eMailField.getText();
+        String password = passwordField.getText();
+
+        if (validateData(email, password)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/general/MainScreen.fxml"));
             AnchorPane anchorPane = loader.load();
             Scene scene = new Scene(anchorPane);
@@ -45,7 +66,14 @@ public class LoginScreenController {
 
     }
 
-    private boolean validateData() {
-        return eMailField.getText().equals("imie.nazwisko@put.poznan.pl") && passwordField.getText().equals("123");
+    private boolean validateData(String email, String password) {
+        LecturerDto lecturerDto = lecturerRequest.get(email, password);
+        if (lecturerDto != null) {
+            ContextHandler.setLecturerDto(lecturerDto);
+            return true;
+        } else {
+            return false;
+        }
     }
+
 }

@@ -1,6 +1,7 @@
 package dtos;
 
 import entities.Lecture;
+import entities.Lecturer;
 import entities.PresenceOnLecture;
 import entities.Student;
 import lombok.AllArgsConstructor;
@@ -19,15 +20,17 @@ public class PresenceOnLectureDto {
     private Date presenceDate;
     private Student student;
     private Lecture lecture;
+    private Lecturer lecturer;
 
     public PresenceOnLectureDto(PresenceOnLecture presenceOnLecture) {
         this.id = presenceOnLecture.getId();
         this.presenceDate = presenceOnLecture.getPresenceDate();
         this.student = presenceOnLecture.getStudent();
         this.lecture = presenceOnLecture.getLecture();
+        this.lecturer = presenceOnLecture.getLecturer();
     }
 
     public PresenceOnLecture toEntity() {
-        return new PresenceOnLecture(id, presenceDate, student, lecture);
+        return new PresenceOnLecture(id, presenceDate, student, lecture, lecturer);
     }
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "PRESENCE_ON_LECTURE_0008")
+@Table(name = "PRESENCE_ON_LECTURE_0009")
 public class PresenceOnLecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +27,7 @@ public class PresenceOnLecture {
     @ManyToOne()
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
+    @ManyToOne()
+    @JoinColumn(name = "lecturer_id")
+    private Lecturer lecturer;
 }
