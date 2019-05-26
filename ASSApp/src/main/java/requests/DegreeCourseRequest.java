@@ -29,10 +29,10 @@ public class DegreeCourseRequest {
         return responseEntity.getBody();
     }
 
-    public DegreeCourse save(DegreeCourse degreeCourse) {
+    public DegreeCourseDto save(DegreeCourseDto degreeCourseDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<DegreeCourse> requestUpdate = new HttpEntity<>(degreeCourse, null);
-        ResponseEntity<DegreeCourse> response = restTemplate.exchange(Settings.URL + "/degreeCourse", HttpMethod.POST, requestUpdate, DegreeCourse.class);
+        HttpEntity<DegreeCourseDto> requestUpdate = new HttpEntity<>(degreeCourseDto, null);
+        ResponseEntity<DegreeCourseDto> response = restTemplate.exchange(Settings.URL + "/degreeCourse", HttpMethod.POST, requestUpdate, DegreeCourseDto.class);
         return response.getBody();
     }
 

@@ -29,10 +29,10 @@ public class CardRequest {
         return responseEntity.getBody();
     }
 
-    public Card save(Card card) {
+    public CardDto save(CardDto cardDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Card> requestUpdate = new HttpEntity<>(card, null);
-        ResponseEntity<Card> response = restTemplate.exchange(Settings.URL + "/card", HttpMethod.POST, requestUpdate, Card.class);
+        HttpEntity<CardDto> requestUpdate = new HttpEntity<>(cardDto, null);
+        ResponseEntity<CardDto> response = restTemplate.exchange(Settings.URL + "/card", HttpMethod.POST, requestUpdate, CardDto.class);
         return response.getBody();
     }
 

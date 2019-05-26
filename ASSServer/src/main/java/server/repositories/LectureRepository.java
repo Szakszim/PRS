@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface LectureRepository extends JpaRepository<Lecture, Integer> {
-    LectureDto findLectureById(Integer id);
+    LectureDto findLectureByLectureName(String name);
 
     void deleteLectureById(Integer id);
 

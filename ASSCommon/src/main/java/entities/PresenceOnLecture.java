@@ -21,6 +21,8 @@ public class PresenceOnLecture {
     private Integer id;
     @Column(name = "presence_date")
     private Date presenceDate;
+    @Column(name = "hour_time")
+    private String hourTime;
     @ManyToOne()
     @JoinColumn(name = "student_id")
     private Student student;

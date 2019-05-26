@@ -29,10 +29,10 @@ public class LectureTypeRequest {
         return responseEntity.getBody();
     }
 
-    public LectureType save(LectureType lecture) {
+    public LectureTypeDto save(LectureTypeDto lectureTypeDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<LectureType> requestUpdate = new HttpEntity<>(lecture, null);
-        ResponseEntity<LectureType> response = restTemplate.exchange(Settings.URL + "/lectureType", HttpMethod.POST, requestUpdate, LectureType.class);
+        HttpEntity<LectureTypeDto> requestUpdate = new HttpEntity<>(lectureTypeDto, null);
+        ResponseEntity<LectureTypeDto> response = restTemplate.exchange(Settings.URL + "/lectureType", HttpMethod.POST, requestUpdate, LectureTypeDto.class);
         return response.getBody();
     }
 

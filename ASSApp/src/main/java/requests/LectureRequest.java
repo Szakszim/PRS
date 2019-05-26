@@ -23,16 +23,16 @@ public class LectureRequest {
         return response.getBody();
     }
 
-    public LectureDto get(Integer id) {
+    public LectureDto get(String name) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<LectureDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/lecture/" + id, LectureDto.class);
+        ResponseEntity<LectureDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/lecture/" + name, LectureDto.class);
         return responseEntity.getBody();
     }
 
-    public Lecture save(Lecture lecture) {
+    public LectureDto save(LectureDto lectureDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Lecture> requestUpdate = new HttpEntity<>(lecture, null);
-        ResponseEntity<Lecture> response = restTemplate.exchange(Settings.URL + "/lecture", HttpMethod.POST, requestUpdate, Lecture.class);
+        HttpEntity<LectureDto> requestUpdate = new HttpEntity<>(lectureDto, null);
+        ResponseEntity<LectureDto> response = restTemplate.exchange(Settings.URL + "/lecture", HttpMethod.POST, requestUpdate, LectureDto.class);
         return response.getBody();
     }
 

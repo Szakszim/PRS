@@ -29,10 +29,10 @@ public class DeanGroupRequest {
         return responseEntity.getBody();
     }
 
-    public DeanGroup save(DeanGroup deanGroup) {
+    public DeanGroupDto save(DeanGroupDto deanGroupDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<DeanGroup> requestUpdate = new HttpEntity<>(deanGroup, null);
-        ResponseEntity<DeanGroup> response = restTemplate.exchange(Settings.URL + "/deanGroup", HttpMethod.POST, requestUpdate, DeanGroup.class);
+        HttpEntity<DeanGroupDto> requestUpdate = new HttpEntity<>(deanGroupDto, null);
+        ResponseEntity<DeanGroupDto> response = restTemplate.exchange(Settings.URL + "/deanGroup", HttpMethod.POST, requestUpdate, DeanGroupDto.class);
         return response.getBody();
     }
 

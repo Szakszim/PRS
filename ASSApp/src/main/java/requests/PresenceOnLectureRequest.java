@@ -29,10 +29,10 @@ public class PresenceOnLectureRequest {
         return responseEntity.getBody();
     }
 
-    public PresenceOnLecture save(PresenceOnLecture lecture) {
+    public PresenceOnLectureDto save(PresenceOnLectureDto presenceOnLectureDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<PresenceOnLecture> requestUpdate = new HttpEntity<>(lecture, null);
-        ResponseEntity<PresenceOnLecture> response = restTemplate.exchange(Settings.URL + "/presenceOnLecture", HttpMethod.POST, requestUpdate, PresenceOnLecture.class);
+        HttpEntity<PresenceOnLectureDto> requestUpdate = new HttpEntity<>(presenceOnLectureDto, null);
+        ResponseEntity<PresenceOnLectureDto> response = restTemplate.exchange(Settings.URL + "/presenceOnLecture", HttpMethod.POST, requestUpdate, PresenceOnLectureDto.class);
         return response.getBody();
     }
 

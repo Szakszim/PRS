@@ -5,6 +5,8 @@ import controllers.cardreader.CardReaderThread;
 import controllers.temporary.InitializeStudents;
 import controllers.temporary.Lesson;
 import controllers.temporary.Student;
+import dtos.LectureDto;
+import dtos.PresenceOnLectureDto;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +20,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import requests.LectureRequest;
+import requests.PresenceOnLectureRequest;
+import requests.StudentRequest;
+import utils.DateUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +32,10 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MainScreenController implements Initializable {
+
+    //TODO: pobieraj przedmioty dla danego typka
+    //TODO: popraw date - Marcin
+    //TODO: podmiana danych w tabeli - Konrad
 
     @FXML
     private Text loggedText;
@@ -107,16 +117,23 @@ public class MainScreenController implements Initializable {
     @FXML
     private ChoiceBox<?> studentStatsChoiceBox;
 
+    //TODO: to trzeba będzie zmienić na StudentDto oraz PresenceOnLectureDto
     public static HashMap<String, Student> studentHashMap;
     static ObservableList<Student> students;
     static ObservableList<Lesson> lessons;
 
-    private ArrayList<String> subjectList = new ArrayList<>(Arrays.asList("", "AWSI", "IO", "PT", "PZ", "WTI"));
-    private ArrayList<String> roomList = new ArrayList<>(Arrays.asList(
-            "E 210", "E 217", "E 110", "BM A1", "BM A2", "M 215", "M 216", "CW 4"));
-    private ArrayList<String> hourList = new ArrayList<>(Arrays.asList("8:00", "9:45", "11:45", "13:30", "15:10", "16:45"));
-    private ArrayList<String> dateList = new ArrayList<>(Arrays.asList(""));
 
+    // legit
+
+    private StudentRequest studentRequest;
+    private LectureRequest lectureRequest;
+
+    private ArrayList<String> subjectList;
+    private ArrayList<String> dateList;
+    private ArrayList<String> roomList;
+    private ArrayList<String> hourList;
+
+    private PresenceOnLectureRequest presenceOnLectureRequest;
     private boolean listeningButtonPressed;
 
     private Stage stage;
@@ -125,11 +142,13 @@ public class MainScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listeningButtonPressed = false;
 
+        initializeRequests();
         initializeStudentsData();
         initializeColumns();
         initializeChoicebox();
         initializeObservableArrays();
         initializeLogged();
+
 
         students.addListener((InvalidationListener) observable -> presenceTable.setItems(students));
         lessons.addListener((InvalidationListener) observable -> historyTable.setItems(lessons));
@@ -137,6 +156,12 @@ public class MainScreenController implements Initializable {
         filterHistoryTable();
         configureHistoryTable();
 
+    }
+
+    private void initializeRequests() {
+        studentRequest = new StudentRequest();
+        lectureRequest = new LectureRequest();
+        presenceOnLectureRequest = new PresenceOnLectureRequest();
     }
 
     private void initializeLogged() {
@@ -149,6 +174,8 @@ public class MainScreenController implements Initializable {
     }
 
     private void initializeChoicebox() {
+        initializeLists();
+
         subjectChoiceBox.getItems().addAll(subjectList);
         roomChoiceBox.getItems().addAll(roomList);
         hourChoiceBox.getItems().addAll(hourList);
@@ -158,7 +185,68 @@ public class MainScreenController implements Initializable {
         dateHistoryChoiceBox.getSelectionModel().select(0);
     }
 
+    private void initializeLists() {
+        roomList = new ArrayList<>(Arrays.asList(
+                "E 210", "E 217", "E 110", "BM A1", "BM A2", "M 215", "M 216", "CW 4"));
+        hourList = new ArrayList<>(Arrays.asList(
+                "8:00", "9:45", "11:45", "13:30", "15:10", "16:50", "18:30"));
+
+        initializeLectureNamesList();
+        initializeDateList();
+
+    }
+
+    private void initializeDateList() {
+        dateList = new ArrayList<>();
+        dateList.add("");
+        Set<String> dates = new HashSet<>();
+        for (PresenceOnLectureDto presenceOnLectureDto : presenceOnLectureRequest.getAll()) {
+            //TODO: https://stackoverflow.com/questions/12575990/calendar-date-to-yyyy-mm-dd-format-in-java - Marcin
+            dates.add(presenceOnLectureDto.getPresenceDate().toString());
+        }
+        dateList.addAll(dates);
+    }
+
+    private void initializeLectureNamesList() {
+        subjectList = new ArrayList<>();
+        subjectList.add("");
+        Set<String> lectureNames = new HashSet<>();
+        for (LectureDto lectureDto : lectureRequest.getAll()) {
+            lectureNames.add(lectureDto.getLectureName());
+        }
+        subjectList.addAll(lectureNames);
+    }
+
     private void initializeColumns() {
+
+        initializePresenceColumns();
+        initializeHistoryColumns();
+    }
+
+    private void initializeHistoryColumns() {
+
+        subjectHistoryColumn.setCellValueFactory(
+                new PropertyValueFactory<Lesson, String>("subject")
+        );
+
+        roomColumn.setCellValueFactory(
+                new PropertyValueFactory<Lesson, String>("room")
+        );
+
+        hourHistoryColumn.setCellValueFactory(
+                new PropertyValueFactory<Lesson, String>("hour")
+        );
+
+        dateHistoryColumn.setCellValueFactory(
+                new PropertyValueFactory<Lesson, String>("date")
+        );
+
+        frequencyColumn.setCellValueFactory(
+                new PropertyValueFactory<Lesson, Integer>("frequency")
+        );
+    }
+
+    private void initializePresenceColumns() {
         cardIdColumn.setCellValueFactory(
                 new PropertyValueFactory<Student, String>("cardId")
         );
@@ -179,26 +267,6 @@ public class MainScreenController implements Initializable {
         );
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<Student, String>("eMail")
-        );
-
-        subjectHistoryColumn.setCellValueFactory(
-                new PropertyValueFactory<Lesson, String>("subject")
-        );
-
-        roomColumn.setCellValueFactory(
-                new PropertyValueFactory<Lesson, String>("room")
-        );
-
-        hourHistoryColumn.setCellValueFactory(
-                new PropertyValueFactory<Lesson, String>("hour")
-        );
-
-        dateHistoryColumn.setCellValueFactory(
-                new PropertyValueFactory<Lesson, String>("date")
-        );
-
-        frequencyColumn.setCellValueFactory(
-                new PropertyValueFactory<Lesson, Integer>("frequency")
         );
     }
 
@@ -261,7 +329,7 @@ public class MainScreenController implements Initializable {
     @FXML
     void startListeningButtonAction() {
 
-        if(checkIfFieldsAreEmpty()!=true){
+        if (!checkIfFieldsAreEmpty()) {
 
             listeningButtonPressed = !listeningButtonPressed;
 
@@ -277,8 +345,8 @@ public class MainScreenController implements Initializable {
                 String date = datePicker.getValue().format(DateTimeFormatter.ISO_DATE);
 
                 boolean checkIfDateIsInDatabase = true;
-                for (String dateList : dateList) {
-                    if (dateList.equals(date)) {
+                for (String data : dateList) {
+                    if (data.equals(date)) {
                         checkIfDateIsInDatabase = false;
                     }
                 }
@@ -288,14 +356,15 @@ public class MainScreenController implements Initializable {
                     dateHistoryChoiceBox.getSelectionModel().select(0);
                 }
 
-
                 Lesson lesson = new Lesson(subjectChoiceBox.getValue(), roomChoiceBox.getValue(), hourChoiceBox.getValue(), date, presenceTable.getItems().size());
+                addPresenceToDatabase();
+
                 lessons.add(lesson);
 
                 students.clear();
                 startListeningButton.setText("Sprawdź obecność");
             }
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Wprowadź wymagane dane");
@@ -303,11 +372,25 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    private void addPresenceToDatabase() {
+        //TODO: dodaj w bazie: sale...
+        PresenceOnLectureDto presenceOnLectureDto = new PresenceOnLectureDto();
+        presenceOnLectureDto.setLecture(lectureRequest.get(subjectChoiceBox.getValue()).toEntity());
+        presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
+        presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
+        presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
+        //TODO: Pobieraj studenta i przypisuj go tutaj
+        // presenceOnLectureDto.setStudent();
+
+        presenceOnLectureRequest.save(presenceOnLectureDto);
+
+    }
+
     private Boolean checkIfFieldsAreEmpty() {
         return subjectChoiceBox.getSelectionModel().isEmpty() ||
                 roomChoiceBox.getSelectionModel().isEmpty() ||
                 hourChoiceBox.getSelectionModel().isEmpty() ||
-                datePicker.getValue()==null;
+                datePicker.getValue() == null;
     }
 
     private void setDisableFields(Boolean bool) {

@@ -12,7 +12,7 @@ import parameters.Settings;
 import java.util.List;
 
 public class StudentRequest {
-    public List<StudentDto> getStudents() {
+    public List<StudentDto> getAll() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<StudentDto>> response = restTemplate.exchange(
                 Settings.URL + "/students",
@@ -23,20 +23,20 @@ public class StudentRequest {
         return response.getBody();
     }
 
-    public StudentDto getStudent(Integer id) {
+    public StudentDto get(Integer id) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<StudentDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/student/" + id, StudentDto.class);
         return responseEntity.getBody();
     }
 
-    public Student saveStudent(Student student) {
+    public StudentDto save(StudentDto studentDto) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Student> requestUpdate = new HttpEntity<>(student, null);
-        ResponseEntity<Student> response = restTemplate.exchange(Settings.URL + "/student", HttpMethod.POST, requestUpdate, Student.class);
+        HttpEntity<StudentDto> requestUpdate = new HttpEntity<>(studentDto, null);
+        ResponseEntity<StudentDto> response = restTemplate.exchange(Settings.URL + "/student", HttpMethod.POST, requestUpdate, StudentDto.class);
         return response.getBody();
     }
 
-    public void deleteStudent(Student student) {
+    public void delete(Student student) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Student> requestUpdate = new HttpEntity<>(student, null);
         restTemplate.exchange(Settings.URL + "/student/" + student.getId(), HttpMethod.DELETE, requestUpdate, Student.class);
