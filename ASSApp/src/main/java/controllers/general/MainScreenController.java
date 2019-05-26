@@ -2,11 +2,11 @@ package controllers.general;
 
 import context.ContextHandler;
 import controllers.cardreader.CardReaderThread;
-import controllers.temporary.InitializeStudents;
 import controllers.temporary.Lesson;
-import controllers.temporary.Student;
+import dtos.CardDto;
 import dtos.LectureDto;
 import dtos.PresenceOnLectureDto;
+import entities.Student;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import requests.CardRequest;
 import requests.LectureRequest;
 import requests.PresenceOnLectureRequest;
 import requests.StudentRequest;
@@ -118,15 +119,16 @@ public class MainScreenController implements Initializable {
     private ChoiceBox<?> studentStatsChoiceBox;
 
     //TODO: to trzeba będzie zmienić na StudentDto oraz PresenceOnLectureDto
-    public static HashMap<String, Student> studentHashMap;
-    static ObservableList<Student> students;
-    static ObservableList<Lesson> lessons;
+    private static HashMap<String, Student> studentHashMap;
+    private static ObservableList<Student> students;
+    private static ObservableList<Lesson> lessons;
 
 
     // legit
 
     private StudentRequest studentRequest;
     private LectureRequest lectureRequest;
+    private CardRequest cardRequest;
 
     private ArrayList<String> subjectList;
     private ArrayList<String> dateList;
@@ -137,6 +139,7 @@ public class MainScreenController implements Initializable {
     private boolean listeningButtonPressed;
 
     private Stage stage;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -162,6 +165,7 @@ public class MainScreenController implements Initializable {
         studentRequest = new StudentRequest();
         lectureRequest = new LectureRequest();
         presenceOnLectureRequest = new PresenceOnLectureRequest();
+        cardRequest = new CardRequest();
     }
 
     private void initializeLogged() {
@@ -271,7 +275,10 @@ public class MainScreenController implements Initializable {
     }
 
     private void initializeStudentsData() {
-        studentHashMap = InitializeStudents.initializeStudents();
+        List<CardDto> cards = cardRequest.getAll();
+        for (CardDto c: cards) {
+            studentHashMap.put(c.getId(),c.getStudent());
+        }
     }
 
     private void filterHistoryTable() {
@@ -374,15 +381,17 @@ public class MainScreenController implements Initializable {
 
     private void addPresenceToDatabase() {
         //TODO: dodaj w bazie: sale...
-        PresenceOnLectureDto presenceOnLectureDto = new PresenceOnLectureDto();
-        presenceOnLectureDto.setLecture(lectureRequest.get(subjectChoiceBox.getValue()).toEntity());
-        presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
-        presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
-        presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
-        //TODO: Pobieraj studenta i przypisuj go tutaj
-        // presenceOnLectureDto.setStudent();
+        PresenceOnLectureDto presenceOnLectureDto;
+        for(Student s : students) {
+            presenceOnLectureDto = new PresenceOnLectureDto();
+            presenceOnLectureDto.setLecture(lectureRequest.get(subjectChoiceBox.getValue()).toEntity());
+            presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
+            presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
+            presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
+            presenceOnLectureDto.setStudent(s);
 
-        presenceOnLectureRequest.save(presenceOnLectureDto);
+            presenceOnLectureRequest.save(presenceOnLectureDto);
+        }
 
     }
 
@@ -410,7 +419,7 @@ public class MainScreenController implements Initializable {
             if (entry.getKey().equals(cardId)) {
                 Student student = entry.getValue();
                 for (Student student_in_list : students) {
-                    if (student_in_list.getAlbumNumber().equals(student.getAlbumNumber())) {
+                    if (student_in_list.getId().equals(student.getId())) {
                         return;
                     }
                 }
