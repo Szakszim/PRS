@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.LectureTypeDto;
-import entities.LectureType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,28 +21,28 @@ public class LectureTypeController {
     private LectureTypeRepository lectureTypeRepository;
 
     @Transactional
-    @PostMapping(value = "/lecturetype")
-    public ResponseEntity saveLectureType(@RequestBody @Valid LectureType lectureType, BindingResult result) {
+    @PostMapping(value = "/lectureType")
+    public ResponseEntity saveLectureType(@RequestBody @Valid LectureTypeDto lectureTypeDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            lectureTypeRepository.save(lectureType);
-            return ServerResponse.positive(lectureType);
+            lectureTypeRepository.save(lectureTypeDto.toEntity());
+            return ServerResponse.positive(lectureTypeDto.toEntity());
         }
     }
 
-    @GetMapping(value = "/lecturetype/{id}")
+    @GetMapping(value = "/lectureType/{id}")
     public LectureTypeDto getLectureType(@PathVariable("id") Integer id) {
         return lectureTypeRepository.findLectureTypeById(id);
     }
 
     @Transactional
-    @DeleteMapping(value = "/lecturetype/{id}")
+    @DeleteMapping(value = "/lectureType/{id}")
     public void deleteLectureType(@PathVariable("id") Integer id) {
         lectureTypeRepository.deleteLectureTypeById(id);
     }
 
-    @GetMapping(value = "/lecturetypes")
+    @GetMapping(value = "/lectureTypes")
     public List<LectureTypeDto> getLectureTypes() {
         return lectureTypeRepository.findAllLectureTypesAsDto();
     }

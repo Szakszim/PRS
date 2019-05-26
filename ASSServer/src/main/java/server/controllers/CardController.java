@@ -1,7 +1,6 @@
 package server.controllers;
 
 import dtos.CardDto;
-import entities.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,12 +20,12 @@ public class CardController {
 
     @Transactional
     @PostMapping(value = "/card")
-    public ResponseEntity saveCard(@RequestBody @Valid Card card, BindingResult result) {
+    public ResponseEntity saveCard(@RequestBody @Valid CardDto cardDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            cardRepository.save(card);
-            return ServerResponse.positive(card);
+            cardRepository.save(cardDto.toEntity());
+            return ServerResponse.positive(cardDto.toEntity());
         }
     }
 

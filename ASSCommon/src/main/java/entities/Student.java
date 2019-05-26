@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Student {
     @Id
     @Column(name = "id")
-    private Integer id;
+    private String id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")

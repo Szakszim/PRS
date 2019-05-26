@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.DegreeCourseDto;
-import entities.DegreeCourse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,28 +20,28 @@ public class DegreeCourseController {
     private DegreeCourseRepository degreeCourseRepository;
 
     @Transactional
-    @PostMapping(value = "/degreecourse")
-    public ResponseEntity saveDegreeCourse(@RequestBody @Valid DegreeCourse degreeCourse, BindingResult result) {
+    @PostMapping(value = "/degreeCourse")
+    public ResponseEntity saveDegreeCourse(@RequestBody @Valid DegreeCourseDto degreeCourseDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            degreeCourseRepository.save(degreeCourse);
-            return ServerResponse.positive(degreeCourse);
+            degreeCourseRepository.save(degreeCourseDto.toEntity());
+            return ServerResponse.positive(degreeCourseDto.toEntity());
         }
     }
 
-    @GetMapping(value = "/degreecourse/{id}")
+    @GetMapping(value = "/degreeCourse/{id}")
     public DegreeCourseDto getDegreeCourse(@PathVariable("id") Integer id) {
         return degreeCourseRepository.findDegreeCourseById(id);
     }
 
     @Transactional
-    @DeleteMapping(value = "/degreecourse/{id}")
+    @DeleteMapping(value = "/degreeCourse/{id}")
     public void deleteDegreeCourse(@PathVariable("id") Integer id) {
         degreeCourseRepository.deleteDegreeCourseById(id);
     }
 
-    @GetMapping(value = "/degreecourses")
+    @GetMapping(value = "/degreeCourses")
     public List<DegreeCourseDto> getDegreeCourses() {
         return degreeCourseRepository.findAllDegreeCoursesAsDto();
     }

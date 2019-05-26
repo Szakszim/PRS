@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.FacultyDto;
-import entities.Faculty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,12 +21,12 @@ public class FacultyController {
 
     @Transactional
     @PostMapping(value = "/faculty")
-    public ResponseEntity saveFaculty(@RequestBody @Valid Faculty faculty, BindingResult result) {
+    public ResponseEntity saveFaculty(@RequestBody @Valid FacultyDto facultyDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            facultyRepository.save(faculty);
-            return ServerResponse.positive(faculty);
+            facultyRepository.save(facultyDto.toEntity());
+            return ServerResponse.positive(facultyDto.toEntity());
         }
     }
 

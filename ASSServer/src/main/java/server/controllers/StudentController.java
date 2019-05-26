@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.StudentDto;
-import entities.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,12 +21,12 @@ public class StudentController {
 
     @Transactional
     @PostMapping(value = "/student")
-    public ResponseEntity saveStudent(@RequestBody @Valid Student student, BindingResult result) {
+    public ResponseEntity saveStudent(@RequestBody @Valid StudentDto studentDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            studentRepository.save(student);
-            return ServerResponse.positive(student);
+            studentRepository.save(studentDto.toEntity());
+            return ServerResponse.positive(studentDto.toEntity());
         }
     }
 

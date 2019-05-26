@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.DeanGroupDto;
-import entities.DeanGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,28 +20,28 @@ public class DeanGroupController {
     private DeanGroupRepository deanGroupRepository;
 
     @Transactional
-    @PostMapping(value = "/deangroup")
-    public ResponseEntity saveDeanGroup(@RequestBody @Valid DeanGroup deanGroup, BindingResult result) {
+    @PostMapping(value = "/deanGroup")
+    public ResponseEntity saveDeanGroup(@RequestBody @Valid DeanGroupDto deanGroupDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            deanGroupRepository.save(deanGroup);
-            return ServerResponse.positive(deanGroup);
+            deanGroupRepository.save(deanGroupDto.toEntity());
+            return ServerResponse.positive(deanGroupDto.toEntity());
         }
     }
 
-    @GetMapping(value = "/deangroup/{id}")
+    @GetMapping(value = "/deanGroup/{id}")
     public DeanGroupDto getDeanGroup(@PathVariable("id") Integer id) {
         return deanGroupRepository.findDeanGroupById(id);
     }
 
     @Transactional
-    @DeleteMapping(value = "/deangroup/{id}")
+    @DeleteMapping(value = "/deanGroup/{id}")
     public void deleteDeanGroup(@PathVariable("id") Integer id) {
         deanGroupRepository.deleteDeanGroupById(id);
     }
 
-    @GetMapping(value = "/deangroups")
+    @GetMapping(value = "/deanGroups")
     public List<DeanGroupDto> getDeanGroups() {
         return deanGroupRepository.findAllDeanGroupAsDto();
     }

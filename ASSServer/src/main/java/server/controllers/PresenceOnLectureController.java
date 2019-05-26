@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.PresenceOnLectureDto;
-import entities.PresenceOnLecture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,28 +20,28 @@ public class PresenceOnLectureController {
     private PresenceOnLectureRepository presenceOnLectureRepository;
 
     @Transactional
-    @PostMapping(value = "/presenceonlecture")
-    public ResponseEntity savePresenceOnLecture(@RequestBody @Valid PresenceOnLecture presenceOnLecture, BindingResult result) {
+    @PostMapping(value = "/presenceOnLecture")
+    public ResponseEntity savePresenceOnLecture(@RequestBody @Valid PresenceOnLectureDto presenceOnLectureDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            presenceOnLectureRepository.save(presenceOnLecture);
-            return ServerResponse.positive(presenceOnLecture);
+            presenceOnLectureRepository.save(presenceOnLectureDto.toEntity());
+            return ServerResponse.positive(presenceOnLectureDto.toEntity());
         }
     }
 
-    @GetMapping(value = "/presenceonlecture/{id}")
+    @GetMapping(value = "/presenceOnLecture/{id}")
     public PresenceOnLectureDto getPresenceOnLecture(@PathVariable("id") Integer id) {
         return presenceOnLectureRepository.findPresenceOnLectureById(id);
     }
 
     @Transactional
-    @DeleteMapping(value = "/presenceonlecture/{id}")
+    @DeleteMapping(value = "/presenceOnLecture/{id}")
     public void deletePresenceOnLecture(@PathVariable("id") Integer id) {
         presenceOnLectureRepository.deletePresenceOnLectureById(id);
     }
 
-    @GetMapping(value = "/presenceonlectures")
+    @GetMapping(value = "/presenceOnLectures")
     public List<PresenceOnLectureDto> getPresenceOnLectures() {
         return presenceOnLectureRepository.findAllPresenceOnLecturesAsDto();
     }

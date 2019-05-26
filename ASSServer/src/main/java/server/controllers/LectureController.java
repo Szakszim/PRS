@@ -2,7 +2,6 @@ package server.controllers;
 
 
 import dtos.LectureDto;
-import entities.Lecture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,12 +21,12 @@ public class LectureController {
 
     @Transactional
     @PostMapping(value = "/lecture")
-    public ResponseEntity saveLecture(@RequestBody @Valid Lecture lecture, BindingResult result) {
+    public ResponseEntity saveLecture(@RequestBody @Valid LectureDto lectureDto, BindingResult result) {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            lectureRepository.save(lecture);
-            return ServerResponse.positive(lecture);
+            lectureRepository.save(lectureDto.toEntity());
+            return ServerResponse.positive(lectureDto.toEntity());
         }
     }
 
