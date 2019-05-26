@@ -14,6 +14,6 @@ public interface DegreeCourseRepository extends JpaRepository<DegreeCourse, Inte
 
     void deleteDegreeCourseById(Integer id);
 
-    @Query("SELECT NEW DegreeCourseDto(d.id,d.degreeName,d.faculty) FROM DegreeCourse d")
+    @Query("SELECT NEW dtos.DegreeCourseDto(d) FROM DegreeCourse d")
     List<DegreeCourseDto> findAllDegreeCoursesAsDto();
 }

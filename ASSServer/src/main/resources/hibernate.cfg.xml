@@ -4,11 +4,11 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.username">CRSDBUSER0001</property>
-        <property name="hibernate.connection.password">administrator1234</property>
+        <property name="hibernate.connection.username">PRS_DATABASE_USER_001</property>
+        <property name="hibernate.connection.password">administrator123</property>
 
         <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-        <property name="connection.url">jdbc:sqlserver://localhost:1433;database=CRSDBtest02</property>
+        <property name="connection.url">jdbc:sqlserver://localhost:1433;database=PRS_DATABASE</property>
         <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hbm2ddl.auto">update</property>

@@ -14,6 +14,6 @@ public interface LectureRepository extends JpaRepository<Lecture, Integer> {
 
     void deleteLectureById(Integer id);
 
-    @Query("SELECT NEW LectureDto(l.id,l.lectureName,l.degreeCourse,l.lectureType) FROM Lecture l")
+    @Query("SELECT NEW dtos.LectureDto(l) FROM Lecture l")
     List<LectureDto> findAllLecturesAsDto();
 }

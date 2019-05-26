@@ -14,6 +14,6 @@ public interface DeanGroupRepository extends JpaRepository<DeanGroup, Integer> {
 
     void deleteDeanGroupById(Integer id);
 
-    @Query("SELECT NEW DeanGroupDto(d.id,d.deanName,d.faculty,d.semester,d.degreeCourse) FROM DeanGroup d")
+    @Query("SELECT NEW dtos.DeanGroupDto(d) FROM DeanGroup d")
     List<DeanGroupDto> findAllDeanGroupAsDto();
 }

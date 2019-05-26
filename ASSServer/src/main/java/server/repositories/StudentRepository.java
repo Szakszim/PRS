@@ -14,6 +14,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     void deleteStudentById(Integer id);
 
-    @Query("SELECT NEW StudentDto(s.id,s.firstName,s.firstName,s.deanGroup,s.EMail) FROM Student s")
+    @Query("SELECT NEW dtos.StudentDto(s) FROM Student s")
     List<StudentDto> findAllStudentsAsDto();
 }

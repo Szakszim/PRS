@@ -14,6 +14,6 @@ public interface CardRepository extends JpaRepository<Card, Integer> {
 
     void deleteCardById(Integer id);
 
-    @Query("SELECT NEW CardDto(c.id,c.student) FROM Card c")
+    @Query("SELECT NEW dtos.CardDto(c) FROM Card c")
     List<CardDto> findAllCardsAsDto();
 }

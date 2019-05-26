@@ -14,6 +14,6 @@ public interface PresenceOnLectureRepository extends JpaRepository<PresenceOnLec
 
     void deletePresenceOnLectureById(Integer id);
 
-    @Query("SELECT NEW PresenceOnLectureDto(p.id,p.presenceDate,p.student,p.lecture) FROM PresenceOnLecture p")
+    @Query("SELECT NEW dtos.PresenceOnLectureDto(p) FROM PresenceOnLecture p")
     List<PresenceOnLectureDto> findAllPresenceOnLecturesAsDto();
 }

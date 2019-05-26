@@ -14,6 +14,6 @@ public interface LectureTypeRepository extends JpaRepository<LectureType, Intege
 
     void deleteLectureTypeById(Integer id);
 
-    @Query("SELECT NEW CardDto(c.id,c.student) FROM Card c")
+    @Query("SELECT NEW dtos.LectureTypeDto(l) FROM LectureType l")
     List<LectureTypeDto> findAllLectureTypesAsDto();
 }

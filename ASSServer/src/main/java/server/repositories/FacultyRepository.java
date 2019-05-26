@@ -14,6 +14,6 @@ public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
 
     void deleteFacultyById(Integer id);
 
-    @Query("SELECT NEW FacultyDto(f.id,f.facultyAddress) FROM Faculty f")
+    @Query("SELECT NEW dtos.FacultyDto(f) FROM Faculty f")
     List<FacultyDto> findAllFacultiesAsDto();
 }
