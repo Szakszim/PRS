@@ -196,7 +196,7 @@ public class MainScreenController implements Initializable {
 
     private void initializeLists() {
         roomList = new ArrayList<>(Arrays.asList(
-                "E 210", "E 217", "E 110", "BM A1", "BM A2", "M 215", "M 216", "CW 4"));
+                "E-210", "E-217", "E-110", "BM-A1", "BM-A2", "M-215", "M-216", "CW-4"));
         hourList = new ArrayList<>(Arrays.asList(
                 "8:00", "9:45", "11:45", "13:30", "15:10", "16:50", "18:30"));
 

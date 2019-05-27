@@ -16,4 +16,6 @@ public interface CardRepository extends JpaRepository<Card, String> {
 
     @Query("SELECT NEW dtos.CardDto(c) FROM Card c")
     List<CardDto> findAllCardsAsDto();
+
+    CardDto findCardByStudent_Id(Integer id);
 }

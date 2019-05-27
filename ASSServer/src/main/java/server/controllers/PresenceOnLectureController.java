@@ -12,6 +12,10 @@ import server.utils.ServerResponse;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -49,8 +53,10 @@ public class PresenceOnLectureController {
 
 
     @GetMapping(value = "/presenceOnLectures/{date}/{hour}/{room}")
-    public List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(@PathVariable ("date") String date, @PathVariable ("hour") String hour, @PathVariable ("room") String room ){
-        return presenceOnLectureRepository.findAllByPresenceDateAndHourTimeAndRoom(date, hour, room);
+    public List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(@PathVariable("date") String date, @PathVariable("hour") String hour, @PathVariable("room") String room) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateSql = formatter.parse(date);
+        return presenceOnLectureRepository.findAllByPresenceDateAndHourTimeAndRoom(dateSql, hour, room);
     }
 
 }

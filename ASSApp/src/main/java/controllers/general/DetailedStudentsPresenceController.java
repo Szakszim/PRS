@@ -9,8 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import requests.CardRequest;
 import requests.PresenceOnLectureRequest;
-import requests.StudentRequest;
 
 import java.net.URL;
 import java.util.List;
@@ -46,7 +46,7 @@ public class DetailedStudentsPresenceController implements Initializable {
     private static ObservableList<StudentDto> students;
 
     private PresenceOnLectureRequest presenceOnLectureRequest;
-    private StudentRequest studentRequest;
+    private CardRequest cardRequest;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,7 +56,7 @@ public class DetailedStudentsPresenceController implements Initializable {
 
     private void initializeRequests() {
         presenceOnLectureRequest = new PresenceOnLectureRequest();
-        studentRequest = new StudentRequest();
+        cardRequest = new CardRequest();
     }
 
     public void initializeStudentsPresenceColumns() {
@@ -90,6 +90,7 @@ public class DetailedStudentsPresenceController implements Initializable {
                 presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(date,hour,room);
         for (PresenceOnLecture p : presenceOnLecture){
             StudentDto studentDto = new StudentDto(p.getStudent());
+            studentDto.setCardId(cardRequest.findCardByStudent_Id(studentDto.getId()).getId());
             students.add(studentDto);
         }
         studentsTable.setItems(students);

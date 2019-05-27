@@ -41,4 +41,11 @@ public class CardRequest {
         HttpEntity<Card> requestUpdate = new HttpEntity<>(card, null);
         restTemplate.exchange(Settings.URL + "/card/" + card.getId(), HttpMethod.DELETE, requestUpdate, Card.class);
     }
+
+    public CardDto findCardByStudent_Id(Integer id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<CardDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/card/student/" + id, CardDto.class);
+        return responseEntity.getBody();
+    }
+    ///"
 }

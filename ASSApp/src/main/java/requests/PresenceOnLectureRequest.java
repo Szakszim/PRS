@@ -46,7 +46,7 @@ public class PresenceOnLectureRequest {
     public List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(String date, String hour, String room) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<PresenceOnLecture>> response = restTemplate.exchange(
-                Settings.URL + "/presenceOnLectures/" + date + "/" + hour + "/" + room,
+                Settings.URL + "/presenceOnLectures/" + date + "/" + hour + "/" + room.replaceAll(" ", ""),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<PresenceOnLecture>>() {

@@ -45,5 +45,10 @@ public class CardController {
         return cardRepository.findAllCardsAsDto();
     }
 
+    @GetMapping(value = "/card/student/{id}")
+    public CardDto findCardByStudent_Id(@PathVariable("id") Integer id) {
+        return cardRepository.findCardByStudent_Id(id);
+    }
+
 
 }
