@@ -7,9 +7,7 @@ import dtos.CardDto;
 import dtos.LectureDto;
 import dtos.PresenceOnLectureDto;
 import dtos.StudentDto;
-import entities.Lecture;
 import entities.Lecturer;
-import entities.PresenceOnLecture;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -288,8 +286,7 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    private void initializeLessons()
-    {
+    private void initializeLessons() {
         List<PresenceOnLectureDto> presenceOnLectures = presenceOnLectureRequest.getAll();
         List<PresenceOnLectureDto> presenceExamples = new ArrayList<>();
         HashMap<Date,Integer> lessonsFrequency = new HashMap<>();
@@ -347,19 +344,23 @@ public class MainScreenController implements Initializable {
     private void configureHistoryTable() {
         historyTable.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
-                Parent root = null;
                 try {
-                    root = FXMLLoader.load(this.getClass().getResource("/views/general/DetailedStudentsPresenceScreen.fxml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/general/DetailedStudentsPresenceScreen.fxml"));
+                    Parent root = loader.load();
+
+                    DetailedStudentsPresenceController controller = loader.getController();
+                    Lesson lesson = (Lesson) historyTable.getSelectionModel().getSelectedItem();
+                    controller.initData(lesson.getDate(), lesson.getHour(),lesson.getRoom());
+
+                    stage = new Stage();
+                    stage.setTitle("Przegląd szczegółowy");
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.setScene(new Scene(root));
+                    stage.setResizable(false);
+                    stage.show();
+                } catch (IOException ex) {
+                    System.err.println(ex);
                 }
-                Scene scene = new Scene(root);
-                stage = new Stage();
-                stage.setTitle("Przegląd szczegółowy");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setScene(scene);
-                stage.setResizable(false);
-                stage.show();
             }
         });
     }

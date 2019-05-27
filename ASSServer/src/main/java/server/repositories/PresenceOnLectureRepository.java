@@ -16,4 +16,5 @@ public interface PresenceOnLectureRepository extends JpaRepository<PresenceOnLec
 
     @Query("SELECT NEW dtos.PresenceOnLectureDto(p) FROM PresenceOnLecture p")
     List<PresenceOnLectureDto> findAllPresenceOnLecturesAsDto();
+    List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(String date, String hour, String room);
 }

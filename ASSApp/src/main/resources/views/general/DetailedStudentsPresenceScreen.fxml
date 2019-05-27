@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.DetailedStudentsPresenceController">
    <children>
       <VBox layoutX="14.0" layoutY="14.0" spacing="10.0">
@@ -16,7 +13,7 @@
                   <Font name="Cambria Bold" size="16.0" />
                </font>
             </Label>
-            <TableView prefHeight="440.0" prefWidth="770.0">
+            <TableView fx:id="studentsTable" prefHeight="440.0" prefWidth="770.0">
                <columns>
                   <TableColumn fx:id="cardIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="ID karty" />
                   <TableColumn fx:id="studentIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Indeks studenta" />
@@ -24,7 +21,7 @@
                   <TableColumn fx:id="surnameColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Nazwisko" />
                   <TableColumn fx:id="facultyColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Wydział" />
                   <TableColumn fx:id="deanGroupColumn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" text="Grupa dziekańska" />
-                  <TableColumn fx:id="eMailColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Adres email" />
+                  <TableColumn fx:id="emailColumn" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Adres email" />
                </columns>
             </TableView>
          </children>

@@ -3,9 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0"
-            xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.general.MainScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.MainScreenController">
    <children>
       <TabPane maxHeight="500.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -96,6 +94,6 @@
             </Tab>
         </tabs>
       </TabPane>
-       <Text fx:id="loggedText" layoutX="26.0" layoutY="511.0" strokeType="OUTSIDE" strokeWidth="0.0"/>
+       <Text fx:id="loggedText" layoutX="26.0" layoutY="511.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

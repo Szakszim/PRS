@@ -2,6 +2,7 @@ package server.controllers;
 
 
 import dtos.PresenceOnLectureDto;
+import entities.PresenceOnLecture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -46,5 +47,10 @@ public class PresenceOnLectureController {
         return presenceOnLectureRepository.findAllPresenceOnLecturesAsDto();
     }
 
+
+    @GetMapping(value = "/presenceOnLectures/{date}/{hour}/{room}")
+    public List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(@PathVariable ("date") String date, @PathVariable ("hour") String hour, @PathVariable ("room") String room ){
+        return presenceOnLectureRepository.findAllByPresenceDateAndHourTimeAndRoom(date, hour, room);
+    }
 
 }

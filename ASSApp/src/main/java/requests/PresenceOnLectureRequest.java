@@ -41,4 +41,17 @@ public class PresenceOnLectureRequest {
         HttpEntity<PresenceOnLecture> requestUpdate = new HttpEntity<>(lecture, null);
         restTemplate.exchange(Settings.URL + "/presenceOnLecture/" + lecture.getId(), HttpMethod.DELETE, requestUpdate, PresenceOnLecture.class);
     }
+
+
+    public List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(String date, String hour, String room) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<PresenceOnLecture>> response = restTemplate.exchange(
+                Settings.URL + "/presenceOnLectures/" + date + "/" + hour + "/" + room,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<PresenceOnLecture>>() {
+                });
+        return response.getBody();
+    }
+
 }
