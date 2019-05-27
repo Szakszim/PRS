@@ -21,9 +21,12 @@ public class Lecture {
     @Column(name = "lecture_name")
     private String lectureName;
     @ManyToOne()
-    @JoinColumn(name = "degree_course_id")
-    private DegreeCourse degreeCourse;
+    @JoinColumn(name = "dean_group_id")
+    private DeanGroup deanGroup;
     @ManyToOne()
     @JoinColumn(name = "lecture_type")
     private LectureType lectureType;
+    @ManyToOne()
+    @JoinColumn(name = "lecturer_id")
+    private Lecturer lecturer;
 }

@@ -1,8 +1,9 @@
 package dtos;
 
-import entities.DegreeCourse;
+import entities.DeanGroup;
 import entities.Lecture;
 import entities.LectureType;
+import entities.Lecturer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,18 +16,20 @@ import lombok.Setter;
 public class LectureDto {
     private Integer id;
     private String lectureName;
-    private DegreeCourse degreeCourse;
+    private DeanGroup deanGroup;
     private LectureType lectureType;
+    private Lecturer lecturer;
 
 
     public LectureDto(Lecture lecture) {
         this.id = lecture.getId();
         this.lectureName = lecture.getLectureName();
-        this.degreeCourse = lecture.getDegreeCourse();
+        this.deanGroup = lecture.getDeanGroup();
         this.lectureType = lecture.getLectureType();
+        this.lecturer = lecture.getLecturer();
     }
 
     public Lecture toEntity() {
-        return new Lecture(id, lectureName, degreeCourse, lectureType);
+        return new Lecture(id, lectureName, deanGroup, lectureType, lecturer);
     }
 }

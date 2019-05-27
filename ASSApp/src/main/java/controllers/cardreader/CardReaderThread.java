@@ -28,6 +28,9 @@ public class CardReaderThread implements Runnable {
 
             while (running.get()) {
                 while (!reader.isCardPresent()) {
+                    if (!running.get()) {
+                        return;
+                    }
                 }
 
                 Card card = reader.connect("*");
@@ -40,6 +43,9 @@ public class CardReaderThread implements Runnable {
                 MainScreenController.addRow(hexToString(ICSerialNumber));
 
                 while (reader.isCardPresent()) {
+                    if (!running.get()) {
+                        return;
+                    }
                 }
             }
 
