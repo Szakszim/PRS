@@ -32,4 +32,6 @@ public class PresenceOnLecture {
     @ManyToOne()
     @JoinColumn(name = "lecturer_id")
     private Lecturer lecturer;
+    @Column(name = "room")
+    private String room;
 }

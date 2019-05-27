@@ -12,14 +12,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FacultyDto {
     private Integer id;
+    private String facultyName;
     private String facultyAddress;
 
     public FacultyDto(Faculty faculty) {
         this.id = faculty.getId();
+        this.facultyName = faculty.getFacultyName();
         this.facultyAddress = faculty.getFacultyAddress();
     }
 
     public Faculty toEntity() {
-        return new Faculty(id, facultyAddress);
+        return new Faculty(id, facultyName, facultyAddress);
     }
 }

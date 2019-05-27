@@ -6,7 +6,10 @@ import controllers.temporary.Lesson;
 import dtos.CardDto;
 import dtos.LectureDto;
 import dtos.PresenceOnLectureDto;
-import entities.Student;
+import dtos.StudentDto;
+import entities.Lecture;
+import entities.Lecturer;
+import entities.PresenceOnLecture;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -65,25 +68,25 @@ public class MainScreenController implements Initializable {
 
 
     @FXML
-    private TableColumn<Student, String> cardIdColumn;
+    private TableColumn<StudentDto, String> cardIdColumn;
 
     @FXML
-    private TableColumn<Student, Integer> studentIdColumn;
+    private TableColumn<StudentDto, Integer> studentIdColumn;
 
     @FXML
-    private TableColumn<Student, String> nameColumn;
+    private TableColumn<StudentDto, String> nameColumn;
 
     @FXML
-    private TableColumn<Student, String> surnameColumn;
+    private TableColumn<StudentDto, String> surnameColumn;
 
     @FXML
-    private TableColumn<Student, String> facultyColumn;
+    private TableColumn<StudentDto, String> facultyColumn;
 
     @FXML
-    private TableColumn<Student, String> deanGroupColumn;
+    private TableColumn<StudentDto, String> deanGroupColumn;
 
     @FXML
-    private TableColumn<Student, String> emailColumn;
+    private TableColumn<StudentDto, String> emailColumn;
 
 
     @FXML
@@ -120,8 +123,8 @@ public class MainScreenController implements Initializable {
     private ChoiceBox<?> studentStatsChoiceBox;
 
     //TODO: to trzeba będzie zmienić na StudentDto oraz PresenceOnLectureDto
-    private static HashMap<String, Student> studentHashMap;
-    private static ObservableList<Student> students;
+    private static HashMap<String, StudentDto> studentHashMap;
+    private static ObservableList<StudentDto> students;
     private static ObservableList<Lesson> lessons;
 
 
@@ -132,6 +135,7 @@ public class MainScreenController implements Initializable {
     private CardRequest cardRequest;
 
     private ArrayList<String> subjectList;
+    private ArrayList<Integer> subjectIdList;
     private ArrayList<String> dateList;
     private ArrayList<String> roomList;
     private ArrayList<String> hourList;
@@ -152,6 +156,7 @@ public class MainScreenController implements Initializable {
         initializeColumns();
         initializeChoicebox();
         initializeObservableArrays();
+        initializeLessons();
         initializeLogged();
 
 
@@ -215,12 +220,12 @@ public class MainScreenController implements Initializable {
 
     private void initializeLectureNamesList() {
         subjectList = new ArrayList<>();
-        subjectList.add("");
-        Set<String> lectureNames = new HashSet<>();
-        for (LectureDto lectureDto : lectureRequest.getAll()) {
-            lectureNames.add(lectureDto.getLectureName());
+        subjectIdList = new ArrayList<>();
+        List<LectureDto> lectureNames = lectureRequest.getAll();
+        for (LectureDto lectureDto : lectureNames) {
+            subjectList.add(lectureDto.getLectureName());
+            subjectIdList.add(lectureDto.getId());
         }
-        subjectList.addAll(lectureNames);
     }
 
     private void initializeColumns() {
@@ -254,33 +259,57 @@ public class MainScreenController implements Initializable {
 
     private void initializePresenceColumns() {
         cardIdColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, String>("cardId")
+                new PropertyValueFactory<StudentDto, String>("cardId")
         );
         studentIdColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, Integer>("albumNumber")
+                new PropertyValueFactory<StudentDto, Integer>("Id")
         );
         nameColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, String>("firstName")
+                new PropertyValueFactory<StudentDto, String>("firstName")
         );
         surnameColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, String>("lastName")
+                new PropertyValueFactory<StudentDto, String>("lastName")
         );
         facultyColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, String>("faculty")
+                new PropertyValueFactory<StudentDto, String>("faculty")
         );
         deanGroupColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, String>("deanGroup")
+                new PropertyValueFactory<StudentDto, String>("deanGroupName")
         );
         emailColumn.setCellValueFactory(
-                new PropertyValueFactory<Student, String>("eMail")
+                new PropertyValueFactory<StudentDto, String>("eMail")
         );
     }
 
     private void initializeStudentsData() {
         List<CardDto> cards = cardRequest.getAll();
         for (CardDto c: cards) {
-            studentHashMap.put(c.getId(),c.getStudent());
+            studentHashMap.put(c.getId(),new StudentDto(c.getStudent()));
         }
+    }
+
+    private void initializeLessons()
+    {
+        List<PresenceOnLectureDto> presenceOnLectures = presenceOnLectureRequest.getAll();
+        List<PresenceOnLectureDto> presenceExamples = new ArrayList<>();
+        HashMap<Date,Integer> lessonsFrequency = new HashMap<>();
+        Lecturer contextLecturer = ContextHandler.getLecturerDto().toEntity();
+        for (PresenceOnLectureDto p: presenceOnLectures ) {
+            if(p.getLecturer().equals(contextLecturer))
+            if(lessonsFrequency.containsKey(p.getPresenceDate()))
+            {
+                lessonsFrequency.replace(p.getPresenceDate(),lessonsFrequency.get(p.getPresenceDate())+1);
+            }
+            else
+            {
+                presenceExamples.add(p);
+                lessonsFrequency.put(p.getPresenceDate(),1);
+            }
+        }
+        for (PresenceOnLectureDto p:presenceExamples) {
+            lessons.add(new Lesson(p.getLecture().getLectureName(),roomChoiceBox.getValue(),p.getHourTime(),p.getPresenceDate().toString(),lessonsFrequency.get(p.getPresenceDate())));
+        }
+
     }
 
     private void filterHistoryTable() {
@@ -382,15 +411,15 @@ public class MainScreenController implements Initializable {
     }
 
     private void addPresenceToDatabase() {
-        //TODO: dodaj w bazie: sale...
         PresenceOnLectureDto presenceOnLectureDto;
-        for(Student s : students) {
+        for(StudentDto s : students) {
             presenceOnLectureDto = new PresenceOnLectureDto();
-            presenceOnLectureDto.setLecture(lectureRequest.get(subjectChoiceBox.getValue()).toEntity());
+            presenceOnLectureDto.setLecture(lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex())).toEntity());
             presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
             presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
             presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
-            presenceOnLectureDto.setStudent(s);
+            presenceOnLectureDto.setStudent(s.toEntity());
+            presenceOnLectureDto.setRoom(roomChoiceBox.getValue());
 
             presenceOnLectureRequest.save(presenceOnLectureDto);
         }
@@ -417,10 +446,11 @@ public class MainScreenController implements Initializable {
             System.out.println("Dodaj nowego studenta");
             return;
         }
-        for (Map.Entry<String, Student> entry : studentHashMap.entrySet()) {
+        for (Map.Entry<String, StudentDto> entry : studentHashMap.entrySet()) {
             if (entry.getKey().equals(cardId)) {
-                Student student = entry.getValue();
-                for (Student student_in_list : students) {
+                StudentDto student = entry.getValue();
+                student.setCardId(entry.getKey());
+                for (StudentDto student_in_list : students) {
                     if (student_in_list.getId().equals(student.getId())) {
                         return;
                     }

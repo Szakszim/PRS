@@ -22,6 +22,7 @@ public class PresenceOnLectureDto {
     private Student student;
     private Lecture lecture;
     private Lecturer lecturer;
+    private String room;
 
     public PresenceOnLectureDto(PresenceOnLecture presenceOnLecture) {
         this.id = presenceOnLecture.getId();
@@ -30,9 +31,10 @@ public class PresenceOnLectureDto {
         this.student = presenceOnLecture.getStudent();
         this.lecture = presenceOnLecture.getLecture();
         this.lecturer = presenceOnLecture.getLecturer();
+        this.room = presenceOnLecture.getRoom();
     }
 
     public PresenceOnLecture toEntity() {
-        return new PresenceOnLecture(id, presenceDate, hourTime, student, lecture, lecturer);
+        return new PresenceOnLecture(id, presenceDate, hourTime, student, lecture, lecturer, room);
     }
 }

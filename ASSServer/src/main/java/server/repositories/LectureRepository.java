@@ -12,6 +12,8 @@ import java.util.List;
 public interface LectureRepository extends JpaRepository<Lecture, Integer> {
     LectureDto findLectureByLectureName(String name);
 
+    LectureDto findLectureById(Integer Id);
+
     void deleteLectureById(Integer id);
 
     @Query("SELECT NEW dtos.LectureDto(l) FROM Lecture l")

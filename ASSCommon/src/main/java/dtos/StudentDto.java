@@ -17,6 +17,9 @@ public class StudentDto {
     private String lastName;
     private DeanGroup deanGroup;
     private String eMail;
+    private String faculty;
+    private String deanGroupName;
+    private String cardId;
 
     public StudentDto(Student student) {
         this.id = student.getId();
@@ -24,6 +27,8 @@ public class StudentDto {
         this.lastName = student.getLastName();
         this.deanGroup = student.getDeanGroup();
         this.eMail = student.getEMail();
+        this.deanGroupName = student.getDeanGroup().getDeanName();
+        this.faculty = student.getDeanGroup().getFaculty().getFacultyName();
     }
 
     public Student toEntity() {

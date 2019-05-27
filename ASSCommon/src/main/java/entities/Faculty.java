@@ -18,6 +18,8 @@ public class Faculty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "faculty_name")
+    private String facultyName;
     @Column(name = "faculty_address")
     private String facultyAddress;
 }

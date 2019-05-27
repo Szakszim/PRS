@@ -23,9 +23,9 @@ public class LectureRequest {
         return response.getBody();
     }
 
-    public LectureDto get(String name) {
+    public LectureDto findById(Integer id) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<LectureDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/lecture/" + name, LectureDto.class);
+        ResponseEntity<LectureDto> responseEntity = restTemplate.getForEntity(Settings.URL + "/lecture/" + id, LectureDto.class);
         return responseEntity.getBody();
     }
 

@@ -30,9 +30,9 @@ public class LectureController {
         }
     }
 
-    @GetMapping(value = "/lecture/{name}")
-    public LectureDto getLecture(@PathVariable("name") String name) {
-        return lectureRepository.findLectureByLectureName(name);
+    @GetMapping(value = "/lecture/{id}")
+    public LectureDto getLecture(@PathVariable("id") Integer id) {
+        return lectureRepository.findLectureById(id);
     }
 
     @Transactional
