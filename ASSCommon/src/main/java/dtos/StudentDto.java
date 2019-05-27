@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentDto {
-    private String id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private DeanGroup deanGroup;
