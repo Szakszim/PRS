@@ -32,10 +32,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static utils.DateUtil.convertDateFormat;
+
 public class MainScreenController implements Initializable {
 
     //TODO: pobieraj przedmioty dla danego typka
-    //TODO: popraw date - Marcin
     //TODO: podmiana danych w tabeli - Konrad
 
     @FXML
@@ -144,6 +145,7 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listeningButtonPressed = false;
+        studentHashMap = new HashMap<>();
 
         initializeRequests();
         initializeStudentsData();
@@ -205,8 +207,8 @@ public class MainScreenController implements Initializable {
         dateList.add("");
         Set<String> dates = new HashSet<>();
         for (PresenceOnLectureDto presenceOnLectureDto : presenceOnLectureRequest.getAll()) {
-            //TODO: https://stackoverflow.com/questions/12575990/calendar-date-to-yyyy-mm-dd-format-in-java - Marcin
-            dates.add(presenceOnLectureDto.getPresenceDate().toString());
+            String formattedDate = convertDateFormat(presenceOnLectureDto.getPresenceDate().getTime());
+            dates.add(formattedDate);
         }
         dateList.addAll(dates);
     }
@@ -427,6 +429,5 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-
 }
 
