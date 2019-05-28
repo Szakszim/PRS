@@ -24,7 +24,7 @@ public class Lecture {
     @JoinColumn(name = "dean_group_id")
     private DeanGroup deanGroup;
     @ManyToOne()
-    @JoinColumn(name = "lecture_type")
+    @JoinColumn(name = "lecture_type_id")
     private LectureType lectureType;
     @ManyToOne()
     @JoinColumn(name = "lecturer_id")
