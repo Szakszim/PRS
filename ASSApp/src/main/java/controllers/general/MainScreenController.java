@@ -232,8 +232,8 @@ public class MainScreenController implements Initializable {
         dateList = new ArrayList<>();
         dateList.add("");
         Set<String> dates = new HashSet<>();
-        for (PresenceOnLectureDto presenceOnLectureDto : presenceOnLectureRequest.getAll()) {
-            String formattedDate = convertDateFormat(presenceOnLectureDto.getPresenceDate().getTime());
+        for (PresenceOnLecture presenceOnLecture : presenceOnLectureRequest.findAllByLecturer_Id(ContextHandler.getLecturerDto().getId())) {
+            String formattedDate = convertDateFormat(presenceOnLecture.getPresenceDate().getTime());
             dates.add(formattedDate);
         }
         dateList.addAll(dates);
