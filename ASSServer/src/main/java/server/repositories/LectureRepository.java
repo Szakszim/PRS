@@ -18,4 +18,6 @@ public interface LectureRepository extends JpaRepository<Lecture, Integer> {
 
     @Query("SELECT NEW dtos.LectureDto(l) FROM Lecture l")
     List<LectureDto> findAllLecturesAsDto();
+
+    List<LectureDto> findAllByLecturer_Id(Integer id);
 }

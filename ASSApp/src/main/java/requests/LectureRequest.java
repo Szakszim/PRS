@@ -41,4 +41,15 @@ public class LectureRequest {
         HttpEntity<Lecture> requestUpdate = new HttpEntity<>(lecture, null);
         restTemplate.exchange(Settings.URL + "/lecture/" + lecture.getId(), HttpMethod.DELETE, requestUpdate, Lecture.class);
     }
+
+    public List<LectureDto> findAllByLecturer_Id(Integer id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<LectureDto>> response = restTemplate.exchange(
+                Settings.URL + "/lectures/lecturer/" + id,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<LectureDto>>() {
+                });
+        return response.getBody();
+    }
 }

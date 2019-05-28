@@ -3,7 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.MainScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0"
+            xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.general.MainScreenController">
    <children>
       <TabPane maxHeight="500.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -55,9 +57,12 @@
                                  <columns>
                                     <TableColumn fx:id="dateHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Data" />
                                     <TableColumn fx:id="hourHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Godzina" />
-                                    <TableColumn fx:id="subjectHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Przedmiot" />
-                                    <TableColumn fx:id="frequencyColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Ilość osób obecnych" />
-                                    <TableColumn fx:id="roomColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Sala" />
+                                     <TableColumn fx:id="subjectHistoryColumn" maxWidth="372.0" minWidth="100.0"
+                                                  prefWidth="372.0" text="Przedmiot"/>
+                                     <TableColumn fx:id="frequencyColumn" maxWidth="214.0" minWidth="76.0"
+                                                  prefWidth="125.0" text="Ilość osób obecnych"/>
+                                     <TableColumn fx:id="roomColumn" maxWidth="209.0" minWidth="70.0" prefWidth="79.0"
+                                                  text="Sala"/>
                                  </columns>
                               </TableView>
                            </children>

@@ -59,4 +59,8 @@ public class PresenceOnLectureController {
         return presenceOnLectureRepository.findAllByPresenceDateAndHourTimeAndRoom(dateSql, hour, room);
     }
 
+    @GetMapping(value = "/presenceOnLectures/lecturer/{id}")
+    public List<PresenceOnLecture> findAllByLecturer_Id(@PathVariable("id") Integer id) {
+        return presenceOnLectureRepository.findAllByLecturer_Id(id);
+    }
 }

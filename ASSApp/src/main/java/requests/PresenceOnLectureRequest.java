@@ -54,4 +54,15 @@ public class PresenceOnLectureRequest {
         return response.getBody();
     }
 
+    public List<PresenceOnLecture> findAllByLecturer_Id(Integer id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<PresenceOnLecture>> response = restTemplate.exchange(
+                Settings.URL + "/presenceOnLectures/lecturer/" + id,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<PresenceOnLecture>>() {
+                });
+        return response.getBody();
+    }
+
 }

@@ -46,5 +46,10 @@ public class LectureController {
         return lectureRepository.findAllLecturesAsDto();
     }
 
+    @GetMapping(value = "/lectures/lecturer/{id}")
+    public List<LectureDto> findAllByLecturer_Id(@PathVariable("id") Integer id) {
+        return lectureRepository.findAllByLecturer_Id(id);
+    }
+
 
 }

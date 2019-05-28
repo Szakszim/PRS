@@ -7,7 +7,9 @@ import dtos.CardDto;
 import dtos.LectureDto;
 import dtos.PresenceOnLectureDto;
 import dtos.StudentDto;
+import entities.Lecture;
 import entities.Lecturer;
+import entities.PresenceOnLecture;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -156,7 +158,7 @@ public class MainScreenController implements Initializable {
         initializeObservableArrays();
         initializeLessons();
         initializeLogged();
-
+        initializeHistory();
 
         students.addListener((InvalidationListener) observable -> presenceTable.setItems(students));
         lessons.addListener((InvalidationListener) observable -> historyTable.setItems(lessons));
@@ -165,6 +167,27 @@ public class MainScreenController implements Initializable {
         configureHistoryTable();
 
     }
+
+    private void initializeHistory() {
+
+
+        HashSet<String> dateHourRoom = new HashSet<>();
+        List<PresenceOnLecture> presenceOnLectureDtos = presenceOnLectureRequest.findAllByLecturer_Id(ContextHandler.getLecturerDto().getId());
+        for (PresenceOnLecture p : presenceOnLectureDtos) {
+            if (!dateHourRoom.contains(DateUtil.convertDateFormat(p.getPresenceDate().getTime()) + p.getHourTime() + p.getRoom())) {
+                List<PresenceOnLecture> frequency = presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(DateUtil.convertDateFormat(p.getPresenceDate().getTime()), p.getHourTime(), p.getRoom());
+                Lecture lecture = p.getLecture();
+                if (lecture.getLectureType().getLectureTypeName().equals("Wykład")) {
+                    lessons.add(new Lesson(lecture.getLectureName() + " - " + "Semestr " + lecture.getDeanGroup().getSemester() + " - " + lecture.getLectureType().getLectureTypeName(), p.getRoom(), p.getHourTime(), DateUtil.convertDateFormat(p.getPresenceDate().getTime()), frequency.size()));
+                } else {
+                    lessons.add(new Lesson(lecture.getLectureName() + " - " + lecture.getDeanGroup().getDeanName() + " - " + lecture.getLectureType().getLectureTypeName(), p.getRoom(), p.getHourTime(), DateUtil.convertDateFormat(p.getPresenceDate().getTime()), frequency.size()));
+                }
+                dateHourRoom.add(DateUtil.convertDateFormat(p.getPresenceDate().getTime()) + p.getHourTime() + p.getRoom());
+            }
+        }
+        historyTable.setItems(lessons);
+    }
+
 
     private void initializeRequests() {
         studentRequest = new StudentRequest();
@@ -219,9 +242,14 @@ public class MainScreenController implements Initializable {
     private void initializeLectureNamesList() {
         subjectList = new ArrayList<>();
         subjectIdList = new ArrayList<>();
-        List<LectureDto> lectureNames = lectureRequest.getAll();
+        subjectList.add("");
+        List<LectureDto> lectureNames = lectureRequest.findAllByLecturer_Id(ContextHandler.getLecturerDto().getId());
         for (LectureDto lectureDto : lectureNames) {
-            subjectList.add(lectureDto.getLectureName());
+            if (lectureDto.getLectureType().getLectureTypeName().equals("Wykład")) {
+                subjectList.add(lectureDto.getLectureName() + " - " + "Semestr " + lectureDto.getDeanGroup().getSemester() + " - " + lectureDto.getLectureType().getLectureTypeName());
+            } else {
+                subjectList.add(lectureDto.getLectureName() + " - " + lectureDto.getDeanGroup().getDeanName() + " - " + lectureDto.getLectureType().getLectureTypeName());
+            }
             subjectIdList.add(lectureDto.getId());
         }
     }
@@ -281,30 +309,28 @@ public class MainScreenController implements Initializable {
 
     private void initializeStudentsData() {
         List<CardDto> cards = cardRequest.getAll();
-        for (CardDto c: cards) {
-            studentHashMap.put(c.getId(),new StudentDto(c.getStudent()));
+        for (CardDto c : cards) {
+            studentHashMap.put(c.getId(), new StudentDto(c.getStudent()));
         }
     }
 
     private void initializeLessons() {
         List<PresenceOnLectureDto> presenceOnLectures = presenceOnLectureRequest.getAll();
         List<PresenceOnLectureDto> presenceExamples = new ArrayList<>();
-        HashMap<Date,Integer> lessonsFrequency = new HashMap<>();
+        HashMap<Date, Integer> lessonsFrequency = new HashMap<>();
         Lecturer contextLecturer = ContextHandler.getLecturerDto().toEntity();
-        for (PresenceOnLectureDto p: presenceOnLectures ) {
-            if(p.getLecturer().equals(contextLecturer))
-            if(lessonsFrequency.containsKey(p.getPresenceDate()))
-            {
-                lessonsFrequency.replace(p.getPresenceDate(),lessonsFrequency.get(p.getPresenceDate())+1);
-            }
-            else
-            {
-                presenceExamples.add(p);
-                lessonsFrequency.put(p.getPresenceDate(),1);
-            }
+        for (PresenceOnLectureDto p : presenceOnLectures) {
+            if (p.getLecturer().equals(contextLecturer))
+                if (lessonsFrequency.containsKey(p.getPresenceDate())) {
+                    lessonsFrequency.replace(p.getPresenceDate(), lessonsFrequency.get(p.getPresenceDate()) + 1);
+                } else {
+                    presenceExamples.add(p);
+                    lessonsFrequency.put(p.getPresenceDate(), 1);
+                }
         }
-        for (PresenceOnLectureDto p:presenceExamples) {
-            lessons.add(new Lesson(p.getLecture().getLectureName(),roomChoiceBox.getValue(),p.getHourTime(),p.getPresenceDate().toString(),lessonsFrequency.get(p.getPresenceDate())));
+        for (PresenceOnLectureDto p : presenceExamples) {
+            Lecture lecture = p.getLecture();
+            lessons.add(new Lesson(lecture.getLectureName() + " - " + lecture.getDeanGroup().getDeanName() + " - " + lecture.getLectureType().getLectureTypeName(), roomChoiceBox.getValue(), p.getHourTime(), DateUtil.convertDateFormat(p.getPresenceDate().getTime()), lessonsFrequency.get(p.getPresenceDate())));
         }
 
     }
@@ -335,7 +361,7 @@ public class MainScreenController implements Initializable {
 
         if (!subjectHistoryChoiceBox.getValue().equals("")) {
             String subject = subjectHistoryChoiceBox.getValue();
-            filtered = filtered.filtered(lesson -> lesson.getSubject().equals(subject));
+            filtered = filtered.filtered(lesson -> subject.contains(lesson.getSubject()));
         }
 
         historyTable.setItems(filtered);
@@ -350,7 +376,7 @@ public class MainScreenController implements Initializable {
 
                     DetailedStudentsPresenceController controller = loader.getController();
                     Lesson lesson = (Lesson) historyTable.getSelectionModel().getSelectedItem();
-                    controller.initData(lesson.getDate(), lesson.getHour(),lesson.getRoom());
+                    controller.initData(lesson.getDate(), lesson.getHour(), lesson.getRoom());
 
                     stage = new Stage();
                     stage.setTitle("Przegląd szczegółowy");
@@ -413,7 +439,7 @@ public class MainScreenController implements Initializable {
 
     private void addPresenceToDatabase() {
         PresenceOnLectureDto presenceOnLectureDto;
-        for(StudentDto s : students) {
+        for (StudentDto s : students) {
             presenceOnLectureDto = new PresenceOnLectureDto();
             presenceOnLectureDto.setLecture(lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex())).toEntity());
             presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
