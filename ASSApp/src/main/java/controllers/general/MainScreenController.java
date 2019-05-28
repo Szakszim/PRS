@@ -13,6 +13,7 @@ import entities.PresenceOnLecture;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -490,6 +491,11 @@ public class MainScreenController implements Initializable {
             }
         }
         MainScreenController.areStudentsLate=false;
+    }
+
+    public void onRefreshPresenceClick(ActionEvent actionEvent) {
+        lessons.clear();
+        initializeHistory();
     }
 }
 
