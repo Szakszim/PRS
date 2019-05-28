@@ -29,4 +29,18 @@ public class Lecture {
     @ManyToOne()
     @JoinColumn(name = "lecturer_id")
     private Lecturer lecturer;
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this)
+        {
+            return true;
+        }
+        if(!(obj instanceof Lecture))
+        {
+            return false;
+        }
+        Lecture lecture = (Lecture)obj;
+        return id.equals(lecture.id) && lectureName.equals(lecture.getLectureName());
+    }
 }

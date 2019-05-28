@@ -20,6 +20,7 @@ public class StudentDto {
     private String faculty;
     private String deanGroupName;
     private String cardId;
+    private Boolean isLate;
 
     public StudentDto(Student student) {
         this.id = student.getId();

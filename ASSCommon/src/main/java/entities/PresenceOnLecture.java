@@ -34,4 +34,6 @@ public class PresenceOnLecture {
     private Lecturer lecturer;
     @Column(name = "room")
     private String room;
+    @Column(name = "was_late")
+    private Boolean wasLate;
 }

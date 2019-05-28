@@ -88,6 +88,9 @@ public class MainScreenController implements Initializable {
     @FXML
     private TableColumn<StudentDto, String> emailColumn;
 
+    @FXML
+    private TableColumn<StudentDto, Boolean> wasLateColumn;
+
 
     @FXML
     private ChoiceBox<String> subjectHistoryChoiceBox;
@@ -127,7 +130,7 @@ public class MainScreenController implements Initializable {
     private static ObservableList<StudentDto> students;
     private static ObservableList<Lesson> lessons;
 
-
+    private static Boolean areStudentsLate;
     // legit
 
     private StudentRequest studentRequest;
@@ -151,12 +154,13 @@ public class MainScreenController implements Initializable {
         listeningButtonPressed = false;
         studentHashMap = new HashMap<>();
 
+        areStudentsLate = false;
+
         initializeRequests();
         initializeStudentsData();
         initializeColumns();
         initializeChoicebox();
         initializeObservableArrays();
-        initializeLessons();
         initializeLogged();
         initializeHistory();
 
@@ -172,11 +176,13 @@ public class MainScreenController implements Initializable {
 
 
         HashSet<String> dateHourRoom = new HashSet<>();
+        List<PresenceOnLecture> frequency;
+        Lecture lecture;
         List<PresenceOnLecture> presenceOnLectureDtos = presenceOnLectureRequest.findAllByLecturer_Id(ContextHandler.getLecturerDto().getId());
         for (PresenceOnLecture p : presenceOnLectureDtos) {
             if (!dateHourRoom.contains(DateUtil.convertDateFormat(p.getPresenceDate().getTime()) + p.getHourTime() + p.getRoom())) {
-                List<PresenceOnLecture> frequency = presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(DateUtil.convertDateFormat(p.getPresenceDate().getTime()), p.getHourTime(), p.getRoom());
-                Lecture lecture = p.getLecture();
+                frequency = presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(DateUtil.convertDateFormat(p.getPresenceDate().getTime()), p.getHourTime(), p.getRoom());
+                lecture = p.getLecture();
                 if (lecture.getLectureType().getLectureTypeName().equals("Wykład")) {
                     lessons.add(new Lesson(lecture.getLectureName() + " - " + "Semestr " + lecture.getDeanGroup().getSemester() + " - " + lecture.getLectureType().getLectureTypeName(), p.getRoom(), p.getHourTime(), DateUtil.convertDateFormat(p.getPresenceDate().getTime()), frequency.size()));
                 } else {
@@ -305,6 +311,9 @@ public class MainScreenController implements Initializable {
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<StudentDto, String>("eMail")
         );
+        wasLateColumn.setCellValueFactory(
+                new PropertyValueFactory<StudentDto, Boolean>("isLate")
+        );
     }
 
     private void initializeStudentsData() {
@@ -312,27 +321,6 @@ public class MainScreenController implements Initializable {
         for (CardDto c : cards) {
             studentHashMap.put(c.getId(), new StudentDto(c.getStudent()));
         }
-    }
-
-    private void initializeLessons() {
-        List<PresenceOnLectureDto> presenceOnLectures = presenceOnLectureRequest.getAll();
-        List<PresenceOnLectureDto> presenceExamples = new ArrayList<>();
-        HashMap<Date, Integer> lessonsFrequency = new HashMap<>();
-        Lecturer contextLecturer = ContextHandler.getLecturerDto().toEntity();
-        for (PresenceOnLectureDto p : presenceOnLectures) {
-            if (p.getLecturer().equals(contextLecturer))
-                if (lessonsFrequency.containsKey(p.getPresenceDate())) {
-                    lessonsFrequency.replace(p.getPresenceDate(), lessonsFrequency.get(p.getPresenceDate()) + 1);
-                } else {
-                    presenceExamples.add(p);
-                    lessonsFrequency.put(p.getPresenceDate(), 1);
-                }
-        }
-        for (PresenceOnLectureDto p : presenceExamples) {
-            Lecture lecture = p.getLecture();
-            lessons.add(new Lesson(lecture.getLectureName() + " - " + lecture.getDeanGroup().getDeanName() + " - " + lecture.getLectureType().getLectureTypeName(), roomChoiceBox.getValue(), p.getHourTime(), DateUtil.convertDateFormat(p.getPresenceDate().getTime()), lessonsFrequency.get(p.getPresenceDate())));
-        }
-
     }
 
     private void filterHistoryTable() {
@@ -400,6 +388,7 @@ public class MainScreenController implements Initializable {
 
             if (listeningButtonPressed) {
                 setDisableFields(true);
+                checkIfPresenceExists();
                 CardReaderThread cardReaderThread = new CardReaderThread();
                 Thread readerThread = new Thread(cardReaderThread);
                 readerThread.start();
@@ -408,7 +397,6 @@ public class MainScreenController implements Initializable {
                 setDisableFields(false);
                 CardReaderThread.setRunning(new AtomicBoolean(Boolean.FALSE));
                 String date = datePicker.getValue().format(DateTimeFormatter.ISO_DATE);
-
                 boolean checkIfDateIsInDatabase = true;
                 for (String data : dateList) {
                     if (data.equals(date)) {
@@ -438,16 +426,15 @@ public class MainScreenController implements Initializable {
     }
 
     private void addPresenceToDatabase() {
-        PresenceOnLectureDto presenceOnLectureDto;
+        PresenceOnLectureDto presenceOnLectureDto = new PresenceOnLectureDto();
+        presenceOnLectureDto.setLecture(lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex()-1)).toEntity());
+        presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
+        presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
+        presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
+        presenceOnLectureDto.setRoom(roomChoiceBox.getValue());
+        presenceOnLectureDto.setWasLate(areStudentsLate);
         for (StudentDto s : students) {
-            presenceOnLectureDto = new PresenceOnLectureDto();
-            presenceOnLectureDto.setLecture(lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex())).toEntity());
-            presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
-            presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
-            presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
             presenceOnLectureDto.setStudent(s.toEntity());
-            presenceOnLectureDto.setRoom(roomChoiceBox.getValue());
-
             presenceOnLectureRequest.save(presenceOnLectureDto);
         }
 
@@ -476,6 +463,7 @@ public class MainScreenController implements Initializable {
         for (Map.Entry<String, StudentDto> entry : studentHashMap.entrySet()) {
             if (entry.getKey().equals(cardId)) {
                 StudentDto student = entry.getValue();
+                student.setIsLate(areStudentsLate);
                 student.setCardId(entry.getKey());
                 for (StudentDto student_in_list : students) {
                     if (student_in_list.getId().equals(student.getId())) {
@@ -485,6 +473,23 @@ public class MainScreenController implements Initializable {
                 students.add(student);
             }
         }
+    }
+
+    private void checkIfPresenceExists()
+    {
+        Date date = DateUtil.toDate(datePicker.getValue());
+        List<PresenceOnLectureDto> allPresences = presenceOnLectureRequest.getAll();
+        String room = roomChoiceBox.getValue();
+        String hourTime = hourChoiceBox.getValue();
+        Lecture lecture = lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex()-1)).toEntity();
+        for (PresenceOnLectureDto p: allPresences ) {
+            if(p.getPresenceDate().equals(date) && p.getRoom().equals(room) && p.getLecture().equals(lecture) && p.getHourTime().equals(hourTime))
+            {
+                MainScreenController.areStudentsLate=true;
+                return;
+            }
+        }
+        MainScreenController.areStudentsLate=false;
     }
 }
 
