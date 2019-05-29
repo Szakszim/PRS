@@ -2,6 +2,7 @@ package server.controllers;
 
 
 import dtos.StudentDto;
+import entities.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -46,5 +47,8 @@ public class StudentController {
         return studentRepository.findAllStudentsAsDto();
     }
 
-
+    @GetMapping(value = "/student/{name}/{surname}")
+    public Student findByFirstNameAndLastName(@PathVariable("name") String name, @PathVariable("surname") String surname){
+        return studentRepository.findByFirstNameAndLastName(name, surname);
+    }
 }

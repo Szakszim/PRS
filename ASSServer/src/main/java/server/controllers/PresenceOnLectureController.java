@@ -63,4 +63,16 @@ public class PresenceOnLectureController {
     public List<PresenceOnLecture> findAllByLecturer_Id(@PathVariable("id") Integer id) {
         return presenceOnLectureRepository.findAllByLecturer_Id(id);
     }
+
+    @GetMapping(value = "/presenceOnLectures/{id}")
+    public List<PresenceOnLecture> findAllByLecture_Id(@PathVariable("id") Integer id){
+        return presenceOnLectureRepository.findAllByLecture_Id(id);
+    }
+
+    @GetMapping(value = "/presenceOnLectures/{studentId}/{lectureId}")
+    public List<PresenceOnLecture>findAllByStudent_IdAndLecture_Id(@PathVariable("studentId") Integer studentId,@PathVariable("lectureId") Integer lectureId){
+        return presenceOnLectureRepository.findAllByStudent_IdAndLecture_Id(studentId, lectureId);
+    }
+
+
 }

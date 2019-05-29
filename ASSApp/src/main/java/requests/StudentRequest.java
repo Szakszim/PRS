@@ -41,4 +41,10 @@ public class StudentRequest {
         HttpEntity<Student> requestUpdate = new HttpEntity<>(student, null);
         restTemplate.exchange(Settings.URL + "/student/" + student.getId(), HttpMethod.DELETE, requestUpdate, Student.class);
     }
+
+    public Student findByFirstNameAndLastName(String name, String surname) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Student> responseEntity = restTemplate.getForEntity(Settings.URL + "/student/" + name + "/" + surname, Student.class);
+        return responseEntity.getBody();
+    }
 }

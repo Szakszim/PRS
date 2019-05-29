@@ -16,4 +16,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Query("SELECT NEW dtos.StudentDto(s) FROM Student s")
     List<StudentDto> findAllStudentsAsDto();
+
+    Student findByFirstNameAndLastName(String name, String surname);
 }

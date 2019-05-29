@@ -51,5 +51,4 @@ public class LectureController {
         return lectureRepository.findAllByLecturer_Id(id);
     }
 
-
 }

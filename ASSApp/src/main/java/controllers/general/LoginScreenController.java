@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -43,10 +45,20 @@ public class LoginScreenController implements Initializable {
 
     @FXML
     public void onLoginButtonAction(ActionEvent actionEvent) throws IOException {
+        login();
+    }
 
+    public void handleKeyEvent(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getEventType().equals(KeyEvent.KEY_PRESSED)) {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        }
+    }
+
+    private void login() throws IOException {
         String email = eMailField.getText();
         String password = passwordField.getText();
-
         if (validateData(email, password)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/general/MainScreen.fxml"));
             AnchorPane anchorPane = loader.load();
@@ -56,14 +68,12 @@ public class LoginScreenController implements Initializable {
             stage.setTitle("PRS");
             stage.setScene(scene);
             stage.show();
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Wprowadzono błędne dane");
             alert.showAndWait();
         }
-
-
     }
 
     private boolean validateData(String email, String password) {
@@ -75,5 +85,4 @@ public class LoginScreenController implements Initializable {
             return false;
         }
     }
-
 }

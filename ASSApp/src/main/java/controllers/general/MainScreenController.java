@@ -8,8 +8,8 @@ import dtos.LectureDto;
 import dtos.PresenceOnLectureDto;
 import dtos.StudentDto;
 import entities.Lecture;
-import entities.Lecturer;
 import entities.PresenceOnLecture;
+import entities.Student;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,9 +39,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static utils.DateUtil.convertDateFormat;
 
 public class MainScreenController implements Initializable {
-
-    //TODO: pobieraj przedmioty dla danego typka
-    //TODO: podmiana danych w tabeli - Konrad
 
     @FXML
     private Text loggedText;
@@ -115,24 +112,26 @@ public class MainScreenController implements Initializable {
     private TableColumn<Lesson, String> roomColumn;
 
     @FXML
-    private ChoiceBox<?> semesterStatsChoiceBox;
+    private ChoiceBox<String> subjectStatsChoiceBox;
 
     @FXML
-    private ChoiceBox<?> subjectStatsChoiceBox;
+    private ChoiceBox<String> studentStatsChoiceBox;
 
     @FXML
-    private ChoiceBox<?> deanGroupStatsChoiceBox1;
+    private TextField presentTextField;
 
     @FXML
-    private ChoiceBox<?> studentStatsChoiceBox;
+    private TextField absentTextField;
+
+    @FXML
+    private TextField totalPresenceTextField;
 
     //TODO: to trzeba będzie zmienić na StudentDto oraz PresenceOnLectureDto
     private static HashMap<String, StudentDto> studentHashMap;
     private static ObservableList<StudentDto> students;
     private static ObservableList<Lesson> lessons;
-
+    Integer temporaryLectureId = 0;
     private static Boolean areStudentsLate;
-    // legit
 
     private StudentRequest studentRequest;
     private LectureRequest lectureRequest;
@@ -143,6 +142,7 @@ public class MainScreenController implements Initializable {
     private ArrayList<String> dateList;
     private ArrayList<String> roomList;
     private ArrayList<String> hourList;
+
 
     private PresenceOnLectureRequest presenceOnLectureRequest;
     private boolean listeningButtonPressed;
@@ -160,7 +160,7 @@ public class MainScreenController implements Initializable {
         initializeRequests();
         initializeStudentsData();
         initializeColumns();
-        initializeChoicebox();
+        initializeChoiceboxes();
         initializeObservableArrays();
         initializeLogged();
         initializeHistory();
@@ -170,6 +170,7 @@ public class MainScreenController implements Initializable {
 
         filterHistoryTable();
         configureHistoryTable();
+        filterStudentStatistics();
 
     }
 
@@ -195,7 +196,6 @@ public class MainScreenController implements Initializable {
         historyTable.setItems(lessons);
     }
 
-
     private void initializeRequests() {
         studentRequest = new StudentRequest();
         lectureRequest = new LectureRequest();
@@ -212,7 +212,7 @@ public class MainScreenController implements Initializable {
         lessons = FXCollections.observableArrayList();
     }
 
-    private void initializeChoicebox() {
+    private void initializeChoiceboxes() {
         initializeLists();
 
         subjectChoiceBox.getItems().addAll(subjectList);
@@ -220,8 +220,10 @@ public class MainScreenController implements Initializable {
         hourChoiceBox.getItems().addAll(hourList);
         subjectHistoryChoiceBox.getItems().addAll(subjectList);
         dateHistoryChoiceBox.getItems().addAll(dateList);
+        subjectStatsChoiceBox.getItems().addAll(subjectList);
         subjectHistoryChoiceBox.getSelectionModel().select(0);
         dateHistoryChoiceBox.getSelectionModel().select(0);
+
     }
 
     private void initializeLists() {
@@ -232,7 +234,81 @@ public class MainScreenController implements Initializable {
 
         initializeLectureNamesList();
         initializeDateList();
+    }
 
+    private void filterStudentStatistics(){
+        subjectStatsChoiceBox.valueProperty().addListener((Observable) -> {
+            filterSubjectStatistics();
+        });
+        studentStatsChoiceBox.valueProperty().addListener((Observable) -> {
+            filterStudentsStatistics();
+        });
+    }
+
+    private void filterSubjectStatistics() {
+        if (subjectStatsChoiceBox.getSelectionModel().isEmpty()) {
+            return;
+        }
+
+        if (!subjectStatsChoiceBox.getValue().equals("")) {
+            //TODO optymalizacja metody
+            initializeStudentsListBySelectedLecture();
+        }
+    }
+
+    private void initializeStudentsListBySelectedLecture(){
+        String subject = subjectStatsChoiceBox.getValue();
+        String [] splitted = subject.split(" - ");
+        List<PresenceOnLecture> presenceOnLecturesList = new ArrayList<>();
+        List<LectureDto> lectureDtoList = lectureRequest.findAllByLecturer_Id(ContextHandler.getLecturerDto().getId());
+        Integer lectureId = 0;
+        for(LectureDto l : lectureDtoList){
+            if(l.getLectureName().equals(splitted[0]) && l.getLectureType().getLectureTypeName().equals(splitted[2])){
+                lectureId = l.getId();
+                temporaryLectureId = l.getId();
+                break;
+            }
+        }
+        presenceOnLecturesList = presenceOnLectureRequest.findAllByLecture_Id(lectureId);
+        ObservableList<String> students = FXCollections.observableArrayList();
+        students.add("");
+        for(PresenceOnLecture p : presenceOnLecturesList){
+            String nameAndSurname = p.getStudent().getFirstName() + " " + p.getStudent().getLastName();
+            if(!students.contains(nameAndSurname)){
+                students.add(nameAndSurname);
+            }
+        }
+        studentStatsChoiceBox.setItems(students);
+    }
+
+    private void filterStudentsStatistics() {
+        if(studentStatsChoiceBox.getSelectionModel().isEmpty()){
+            return;
+        }
+
+        if(!studentStatsChoiceBox.getValue().equals("")){
+            getStudentPresence(studentStatsChoiceBox.getValue());
+        }
+    }
+
+    private void getStudentPresence(String nameAndSurname){
+        String name = nameAndSurname.split(" ")[0];
+        String surname = nameAndSurname.split(" ")[1];
+        Student student = studentRequest.findByFirstNameAndLastName(name,surname);
+        Integer frequencyCounter = presenceOnLectureRequest.findAllByStudent_IdAndLecture_Id(student.getId(),temporaryLectureId).size();
+        presentTextField.setText(Integer.toString(frequencyCounter));
+        List<PresenceOnLecture> totalPresenceList = presenceOnLectureRequest.findAllByLecture_Id(temporaryLectureId);
+        Set<String> uniqueDates  = new HashSet<>();
+        for(PresenceOnLecture p : totalPresenceList){
+            uniqueDates.add(p.getPresenceDate().toString()+ p.getHourTime());
+        }
+        Integer totalPresenceCounter = uniqueDates.size();
+        totalPresenceTextField.setText(Integer.toString(totalPresenceCounter));
+        if(!(totalPresenceCounter<frequencyCounter)){
+            absentTextField.setText(Integer.toString(totalPresenceCounter-frequencyCounter));
+        }else{
+            absentTextField.setText("0");
+        }
     }
 
     private void initializeDateList() {

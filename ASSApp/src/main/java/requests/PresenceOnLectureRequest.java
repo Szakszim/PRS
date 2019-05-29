@@ -65,4 +65,28 @@ public class PresenceOnLectureRequest {
         return response.getBody();
     }
 
+    public List<PresenceOnLecture> findAllByLecture_Id(Integer id) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<PresenceOnLecture>> response = restTemplate.exchange(
+                Settings.URL + "/presenceOnLectures/" + id,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<PresenceOnLecture>>() {
+                });
+        return response.getBody();
+    }
+
+    public List<PresenceOnLecture> findAllByStudent_IdAndLecture_Id(Integer studentId, Integer lectureId) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<PresenceOnLecture>> response = restTemplate.exchange(
+                Settings.URL + "/presenceOnLectures/" + studentId + "/" + lectureId,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<PresenceOnLecture>>() {
+                });
+        return response.getBody();
+    }
+
+
+
 }
