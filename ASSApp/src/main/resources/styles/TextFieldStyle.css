@@ -1,11 +1,10 @@
 .text-field{
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-text-fill: black;
     -fx-font-size:12px;
 
     -fx-border-insets: -1,-1,-1,-1;
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: rgb(255,255,255);
     -fx-border-style: solid;
     -fx-border-width: 1 1 1 1;
-    -fx-border-color: gray;
+    -fx-border-color: rgb(52,168,219);
 }

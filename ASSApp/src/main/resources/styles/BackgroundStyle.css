@@ -1,0 +1,11 @@
+.total-black-background{
+    -fx-background-color: rgba(0,0,0,1);
+}
+
+.total-white-background{
+    -fx-background-color: rgba(255,255,255,1);
+}
+
+.basic-background{
+    -fx-background-color: rgb(231,231,231);
+}

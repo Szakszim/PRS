@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.DetailedStudentsPresenceController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.DetailedStudentsPresenceController" styleClass="basic-background" stylesheets="/styles/BackgroundStyle.css">
    <children>
       <VBox layoutX="14.0" layoutY="14.0" spacing="10.0">
          <children>
-            <Label alignment="CENTER" text="Szczegółowe dane o studentach na danych zajęciach">
+            <Label alignment="CENTER" text="Szczegółowe dane o studentach na danych zajęciach" styleClass="title" stylesheets="/styles/LabelStyle.css">
                <font>
                   <Font name="Cambria Bold" size="16.0" />
                </font>
             </Label>
-            <TableView fx:id="studentsTable" prefHeight="440.0" prefWidth="770.0">
+            <TableView fx:id="studentsTable" prefHeight="440.0" prefWidth="770.0" styleClass="table-view" stylesheets="/styles/TableViewStyle.css">
                <columns>
                    <TableColumn fx:id="cardIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="ID karty" />
                    <TableColumn fx:id="studentIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Indeks studenta" />

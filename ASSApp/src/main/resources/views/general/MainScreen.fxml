@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.MainScreenController">
    <children>
-      <TabPane maxHeight="500.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane maxHeight="500.0" maxWidth="900.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" styleClass="tab-pane" stylesheets="/styles/TabPaneStyle.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <tabs>
           <Tab text="Sprawdzenie listy obecności">
             <content>
@@ -45,12 +45,12 @@
                                           <ChoiceBox fx:id="roomChoiceBox" prefWidth="150.0" />
                                           <ChoiceBox fx:id="hourChoiceBox" prefWidth="150.0" />
                                           <DatePicker fx:id="datePicker" prefWidth="150.0" />
-                                          <Button fx:id="startListeningButton" mnemonicParsing="false" onAction="#startListeningButtonAction" prefWidth="136.0" text="Sprawdź obecność" />
+                                          <Button fx:id="startListeningButton" mnemonicParsing="false" onAction="#startListeningButtonAction" prefWidth="136.0" text="Sprawdź obecność" styleClass="confirm-button" stylesheets="/styles/ButtonStyle.css"/>
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
-                              <TableView fx:id="presenceTable">
+                              <TableView fx:id="presenceTable" styleClass="table-view" stylesheets="/styles/TableViewStyle.css">
                                 <columns>
                                   <TableColumn fx:id="cardIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="ID karty" />
                                   <TableColumn fx:id="studentIdColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Indeks studenta" />
@@ -94,12 +94,12 @@
                                        <children>
                                           <ChoiceBox fx:id="subjectHistoryChoiceBox" prefWidth="250.0" />
                                           <ChoiceBox fx:id="dateHistoryChoiceBox" prefWidth="150.0" />
-                                           <Button fx:id="refreshPresenceHistoryButton" mnemonicParsing="false" onAction="#onRefreshPresenceClick" text="Odśwież" />
+                                           <Button fx:id="refreshPresenceHistoryButton" mnemonicParsing="false" onAction="#onRefreshPresenceClick" text="Odśwież" styleClass="confirm-button" stylesheets="/styles/ButtonStyle.css"/>
                                        </children>
                                     </HBox>
                                  </children>
                               </VBox>
-                              <TableView fx:id="historyTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="777.0">
+                              <TableView fx:id="historyTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="777.0" styleClass="table-view" stylesheets="/styles/TableViewStyle.css">
                                  <columns>
                                     <TableColumn fx:id="dateHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Data" />
                                     <TableColumn fx:id="hourHistoryColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Godzina" />

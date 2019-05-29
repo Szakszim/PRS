@@ -1,0 +1,27 @@
+.confirm-button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size:13px;
+
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid;
+    -fx-border-insets: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-color: rgb(116,178,43);
+    -fx-background-color: rgb(116,178,43);
+    /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2 2 2 2;*/
+    /*-fx-border-color: white;*/
+}
+
+.confirm-button:hover{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid;
+    -fx-border-insets: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-color: rgb(127, 191, 43);
+    -fx-background-color: rgb(127, 191, 43);    /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2 2 2 2;*/
+    /*-fx-border-color: white;*/
+}
+

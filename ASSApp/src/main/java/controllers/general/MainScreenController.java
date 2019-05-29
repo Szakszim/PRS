@@ -486,10 +486,12 @@ public class MainScreenController implements Initializable {
                     dateHistoryChoiceBox.getSelectionModel().select(0);
                 }
 
-                Lesson lesson = new Lesson(subjectChoiceBox.getValue(), roomChoiceBox.getValue(), hourChoiceBox.getValue(), date, presenceTable.getItems().size());
+//                Lesson lesson = new Lesson(subjectChoiceBox.getValue(), roomChoiceBox.getValue(), hourChoiceBox.getValue(), date, presenceTable.getItems().size());
+                lessons.clear();
+                initializeHistory();
                 addPresenceToDatabase();
 
-                lessons.add(lesson);
+//                lessons.add(lesson);
 
                 students.clear();
                 startListeningButton.setText("Sprawdź obecność");
@@ -568,6 +570,7 @@ public class MainScreenController implements Initializable {
         }
         MainScreenController.areStudentsLate=false;
     }
+
 
     public void onRefreshPresenceClick(ActionEvent actionEvent) {
         lessons.clear();
