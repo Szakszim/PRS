@@ -42,6 +42,9 @@ public class DetailedStudentsPresenceController implements Initializable {
     @FXML
     private TableColumn<StudentDto, String> emailColumn;
 
+    @FXML
+    private TableColumn<StudentDto, Boolean> wasLateColumn;
+
 
     private static ObservableList<StudentDto> students;
 
@@ -82,6 +85,9 @@ public class DetailedStudentsPresenceController implements Initializable {
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<StudentDto, String>("eMail")
         );
+        wasLateColumn.setCellValueFactory(
+                new PropertyValueFactory<StudentDto, Boolean>("isLate")
+        );
     }
 
     public void initData(String date, String hour, String room){
@@ -90,6 +96,7 @@ public class DetailedStudentsPresenceController implements Initializable {
                 presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(date,hour,room);
         for (PresenceOnLecture p : presenceOnLecture){
             StudentDto studentDto = new StudentDto(p.getStudent());
+            studentDto.setIsLate(p.getWasLate());
             studentDto.setCardId(cardRequest.findCardByStudent_Id(studentDto.getId()).getId());
             students.add(studentDto);
         }

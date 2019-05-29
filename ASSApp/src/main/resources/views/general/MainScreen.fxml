@@ -94,6 +94,7 @@
                                        <children>
                                           <ChoiceBox fx:id="subjectHistoryChoiceBox" prefWidth="250.0" />
                                           <ChoiceBox fx:id="dateHistoryChoiceBox" prefWidth="150.0" />
+                                           <Button fx:id="refreshPresenceHistoryButton" mnemonicParsing="false" onAction="#onRefreshPresenceClick" text="Odśwież" />
                                        </children>
                                     </HBox>
                                  </children>
