@@ -25,3 +25,57 @@
     /*-fx-border-color: white;*/
 }
 
+.cancel-button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size:13px;
+
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid;
+    -fx-border-insets: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-color: rgb(178, 44, 35);
+    -fx-background-color: rgb(178, 44, 35);
+    /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2 2 2 2;*/
+    /*-fx-border-color: white;*/
+}
+
+.cancel-button:hover{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid;
+    -fx-border-insets: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-color: rgb(200, 45, 36);
+    -fx-background-color: rgb(200, 45, 36);   /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2 2 2 2;*/
+    /*-fx-border-color: white;*/
+}
+
+.neutral-button{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size:13px;
+
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid;
+    -fx-border-insets: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-color: rgb(28, 28, 113);
+    -fx-background-color: rgb(28, 28, 113);
+    /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2 2 2 2;*/
+    /*-fx-border-color: white;*/
+}
+
+.neutral-button:hover{
+    -fx-border-width: 1 1 1 1;
+    -fx-border-style: solid;
+    -fx-border-insets: 0 0 0 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-border-color: rgb(33, 33, 137);
+    -fx-background-color: rgb(33, 33, 137);   /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2 2 2 2;*/
+    /*-fx-border-color: white;*/
+}
+

@@ -32,6 +32,7 @@ import utils.DateUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -63,6 +64,13 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private Button startListeningButton;
+
+
+    @FXML
+    private Button cancelButton;
+
+    @FXML
+    private Button openLastButton;
 
 
     @FXML
@@ -172,6 +180,9 @@ public class MainScreenController implements Initializable {
         configureHistoryTable();
         filterStudentStatistics();
 
+        cancelButton.setDisable(Boolean.TRUE);
+        cancelButton.setVisible(Boolean.FALSE);
+
     }
 
     private void initializeHistory() {
@@ -236,7 +247,7 @@ public class MainScreenController implements Initializable {
         initializeDateList();
     }
 
-    private void filterStudentStatistics(){
+    private void filterStudentStatistics() {
         subjectStatsChoiceBox.valueProperty().addListener((Observable) -> {
             filterSubjectStatistics();
         });
@@ -256,14 +267,14 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    private void initializeStudentsListBySelectedLecture(){
+    private void initializeStudentsListBySelectedLecture() {
         String subject = subjectStatsChoiceBox.getValue();
-        String [] splitted = subject.split(" - ");
+        String[] splitted = subject.split(" - ");
         List<PresenceOnLecture> presenceOnLecturesList = new ArrayList<>();
         List<LectureDto> lectureDtoList = lectureRequest.findAllByLecturer_Id(ContextHandler.getLecturerDto().getId());
         Integer lectureId = 0;
-        for(LectureDto l : lectureDtoList){
-            if(l.getLectureName().equals(splitted[0]) && l.getLectureType().getLectureTypeName().equals(splitted[2])){
+        for (LectureDto l : lectureDtoList) {
+            if (l.getLectureName().equals(splitted[0]) && l.getLectureType().getLectureTypeName().equals(splitted[2])) {
                 lectureId = l.getId();
                 temporaryLectureId = l.getId();
                 break;
@@ -272,9 +283,9 @@ public class MainScreenController implements Initializable {
         presenceOnLecturesList = presenceOnLectureRequest.findAllByLecture_Id(lectureId);
         ObservableList<String> students = FXCollections.observableArrayList();
         students.add("");
-        for(PresenceOnLecture p : presenceOnLecturesList){
+        for (PresenceOnLecture p : presenceOnLecturesList) {
             String nameAndSurname = p.getStudent().getFirstName() + " " + p.getStudent().getLastName();
-            if(!students.contains(nameAndSurname)){
+            if (!students.contains(nameAndSurname)) {
                 students.add(nameAndSurname);
             }
         }
@@ -282,31 +293,31 @@ public class MainScreenController implements Initializable {
     }
 
     private void filterStudentsStatistics() {
-        if(studentStatsChoiceBox.getSelectionModel().isEmpty()){
+        if (studentStatsChoiceBox.getSelectionModel().isEmpty()) {
             return;
         }
 
-        if(!studentStatsChoiceBox.getValue().equals("")){
+        if (!studentStatsChoiceBox.getValue().equals("")) {
             getStudentPresence(studentStatsChoiceBox.getValue());
         }
     }
 
-    private void getStudentPresence(String nameAndSurname){
+    private void getStudentPresence(String nameAndSurname) {
         String name = nameAndSurname.split(" ")[0];
         String surname = nameAndSurname.split(" ")[1];
-        Student student = studentRequest.findByFirstNameAndLastName(name,surname);
-        Integer frequencyCounter = presenceOnLectureRequest.findAllByStudent_IdAndLecture_Id(student.getId(),temporaryLectureId).size();
+        Student student = studentRequest.findByFirstNameAndLastName(name, surname);
+        Integer frequencyCounter = presenceOnLectureRequest.findAllByStudent_IdAndLecture_Id(student.getId(), temporaryLectureId).size();
         presentTextField.setText(Integer.toString(frequencyCounter));
         List<PresenceOnLecture> totalPresenceList = presenceOnLectureRequest.findAllByLecture_Id(temporaryLectureId);
-        Set<String> uniqueDates  = new HashSet<>();
-        for(PresenceOnLecture p : totalPresenceList){
-            uniqueDates.add(p.getPresenceDate().toString()+ p.getHourTime());
+        Set<String> uniqueDates = new HashSet<>();
+        for (PresenceOnLecture p : totalPresenceList) {
+            uniqueDates.add(p.getPresenceDate().toString() + p.getHourTime());
         }
         Integer totalPresenceCounter = uniqueDates.size();
         totalPresenceTextField.setText(Integer.toString(totalPresenceCounter));
-        if(!(totalPresenceCounter<frequencyCounter)){
-            absentTextField.setText(Integer.toString(totalPresenceCounter-frequencyCounter));
-        }else{
+        if (!(totalPresenceCounter < frequencyCounter)) {
+            absentTextField.setText(Integer.toString(totalPresenceCounter - frequencyCounter));
+        } else {
             absentTextField.setText("0");
         }
     }
@@ -464,6 +475,13 @@ public class MainScreenController implements Initializable {
             listeningButtonPressed = !listeningButtonPressed;
 
             if (listeningButtonPressed) {
+
+                cancelButton.setVisible(Boolean.TRUE);
+                cancelButton.setDisable(Boolean.FALSE);
+
+                openLastButton.setVisible(Boolean.FALSE);
+                openLastButton.setDisable(Boolean.TRUE);
+
                 setDisableFields(true);
                 checkIfPresenceExists();
                 CardReaderThread cardReaderThread = new CardReaderThread();
@@ -506,7 +524,7 @@ public class MainScreenController implements Initializable {
 
     private void addPresenceToDatabase() {
         PresenceOnLectureDto presenceOnLectureDto = new PresenceOnLectureDto();
-        presenceOnLectureDto.setLecture(lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex()-1)).toEntity());
+        presenceOnLectureDto.setLecture(lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex() - 1)).toEntity());
         presenceOnLectureDto.setLecturer(ContextHandler.getLecturerDto().toEntity());
         presenceOnLectureDto.setPresenceDate(DateUtil.toDate(datePicker.getValue()));
         presenceOnLectureDto.setHourTime(hourChoiceBox.getValue());
@@ -554,27 +572,54 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    private void checkIfPresenceExists()
-    {
+    private void checkIfPresenceExists() {
         Date date = DateUtil.toDate(datePicker.getValue());
         List<PresenceOnLectureDto> allPresences = presenceOnLectureRequest.getAll();
         String room = roomChoiceBox.getValue();
         String hourTime = hourChoiceBox.getValue();
-        Lecture lecture = lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex()-1)).toEntity();
-        for (PresenceOnLectureDto p: allPresences ) {
-            if(p.getPresenceDate().equals(date) && p.getRoom().equals(room) && p.getLecture().equals(lecture) && p.getHourTime().equals(hourTime))
-            {
-                MainScreenController.areStudentsLate=true;
+        Lecture lecture = lectureRequest.findById(subjectIdList.get(subjectChoiceBox.getSelectionModel().getSelectedIndex() - 1)).toEntity();
+        for (PresenceOnLectureDto p : allPresences) {
+            if (p.getPresenceDate().equals(date) && p.getRoom().equals(room) && p.getLecture().equals(lecture) && p.getHourTime().equals(hourTime)) {
+                MainScreenController.areStudentsLate = true;
                 return;
             }
         }
-        MainScreenController.areStudentsLate=false;
+        MainScreenController.areStudentsLate = false;
     }
 
 
     public void onRefreshPresenceClick(ActionEvent actionEvent) {
         lessons.clear();
         initializeHistory();
+    }
+
+    @FXML
+    public void cancelButtonAction() {
+        lessons.clear();
+        startListeningButton.setText("Sprawdź obecność");
+
+        cancelButton.setDisable(Boolean.TRUE);
+        cancelButton.setVisible(Boolean.FALSE);
+
+        openLastButton.setVisible(Boolean.TRUE);
+        openLastButton.setDisable(Boolean.FALSE);
+
+        setDisableFields(false);
+        CardReaderThread.setRunning(new AtomicBoolean(Boolean.FALSE));
+
+        listeningButtonPressed = !listeningButtonPressed;
+
+    }
+
+    @FXML
+    public void openLastButtonAction() {
+        if(!historyTable.getItems().isEmpty()){
+            Lesson lesson = (Lesson) historyTable.getItems().get(0);
+            subjectChoiceBox.setValue(lesson.getSubject());
+            roomChoiceBox.setValue(lesson.getRoom());
+            hourChoiceBox.setValue(lesson.getHour());
+            datePicker.setValue(DateUtil.toLocalDate(new Date(lesson.getDate().replace('-', '/'))));
+        }
     }
 }
 

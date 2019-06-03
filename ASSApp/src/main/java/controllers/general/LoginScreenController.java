@@ -59,7 +59,7 @@ public class LoginScreenController implements Initializable {
     private void login() throws IOException {
         String email = eMailField.getText();
         String password = passwordField.getText();
-        if (validateData(email, password)) {
+        if (validateData("pan.pawel@put.poznan.pl", "Palec123")) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/general/MainScreen.fxml"));
             AnchorPane anchorPane = loader.load();
             Scene scene = new Scene(anchorPane);

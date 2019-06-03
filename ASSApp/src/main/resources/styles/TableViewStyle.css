@@ -15,6 +15,8 @@
 
 .table-view .filler{
     -fx-border-color: rgb(52,168,219);
+    -fx-background-color: rgb(147,179,202);
+
 }
 
 .table-view:focused{

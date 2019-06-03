@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.MainScreenController">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.general.MainScreenController">
    <children>
-      <TabPane maxHeight="500.0" maxWidth="900.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" styleClass="tab-pane" stylesheets="/styles/TabPaneStyle.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <TabPane maxHeight="500.0" maxWidth="1000.0" minHeight="-Infinity" minWidth="1000.0" prefHeight="500.0" prefWidth="1000.0" styleClass="tab-pane" stylesheets="/styles/TabPaneStyle.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <tabs>
           <Tab text="Sprawdzenie listy obecności">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox layoutX="14.0" layoutY="14.0" spacing="5.0">
+                        <VBox layoutX="14.0" layoutY="14.0" spacing="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                            <children>
                               <VBox spacing="2.0">
                                  <children>
@@ -45,7 +60,9 @@
                                           <ChoiceBox fx:id="roomChoiceBox" prefWidth="150.0" />
                                           <ChoiceBox fx:id="hourChoiceBox" prefWidth="150.0" />
                                           <DatePicker fx:id="datePicker" prefWidth="150.0" />
-                                          <Button fx:id="startListeningButton" mnemonicParsing="false" onAction="#startListeningButtonAction" prefWidth="136.0" text="Sprawdź obecność" styleClass="confirm-button" stylesheets="/styles/ButtonStyle.css"/>
+                                          <Button fx:id="startListeningButton" mnemonicParsing="false" onAction="#startListeningButtonAction" prefWidth="136.0" styleClass="confirm-button" stylesheets="/styles/ButtonStyle.css" text="Sprawdź obecność" />
+                                          <Button fx:id="cancelButton" layoutX="650.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelButtonAction" prefWidth="136.0" styleClass="cancel-button" stylesheets="/styles/ButtonStyle.css" text="Anuluj" />
+                                          <Button fx:id="openLastButton" layoutX="796.0" layoutY="10.0" mnemonicParsing="false" onAction="#openLastButtonAction" prefWidth="136.0" styleClass="neutral-button" stylesheets="/styles/ButtonStyle.css" text="Otwórz ostatnią" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -72,7 +89,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+                        <VBox layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
                            <children>
                               <VBox spacing="2.0">
                                  <children>
@@ -94,7 +111,7 @@
                                        <children>
                                           <ChoiceBox fx:id="subjectHistoryChoiceBox" prefWidth="250.0" />
                                           <ChoiceBox fx:id="dateHistoryChoiceBox" prefWidth="150.0" />
-                                           <Button fx:id="refreshPresenceHistoryButton" mnemonicParsing="false" onAction="#onRefreshPresenceClick" text="Odśwież" styleClass="confirm-button" stylesheets="/styles/ButtonStyle.css"/>
+                                           <Button fx:id="refreshPresenceHistoryButton" mnemonicParsing="false" onAction="#onRefreshPresenceClick" styleClass="confirm-button" stylesheets="/styles/ButtonStyle.css" text="Odśwież" />
                                        </children>
                                     </HBox>
                                  </children>
