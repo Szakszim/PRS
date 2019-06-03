@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface PresenceOnLectureRepository extends JpaRepository<PresenceOnLecture, Integer> {
+public interface PresenceOnLectureRepository extends JpaRepository<PresenceOnLecture, Integer>, PresenceOnLectureRepositoryCustom{
     PresenceOnLectureDto findPresenceOnLectureById(Integer id);
 
     void deletePresenceOnLectureById(Integer id);
