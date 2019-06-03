@@ -2,6 +2,7 @@ package server.repositories;
 
 import dtos.PresenceOnLectureDto;
 import entities.PresenceOnLecture;
+import entities.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,8 @@ public interface PresenceOnLectureRepository extends JpaRepository<PresenceOnLec
 
     @Query("SELECT NEW dtos.PresenceOnLectureDto(p) FROM PresenceOnLecture p")
     List<PresenceOnLectureDto> findAllPresenceOnLecturesAsDto();
+
+    PresenceOnLecture findByPresenceDateAndHourTimeRoomAndStudent(Date date, String hour, String room, Student student);
 
     List<PresenceOnLecture> findAllByPresenceDateAndHourTimeAndRoom(Date date, String hour, String room);
 

@@ -30,8 +30,14 @@ public class PresenceOnLectureController {
         if (result.hasErrors()) {
             return ServerResponse.error();
         } else {
-            presenceOnLectureRepository.save(presenceOnLectureDto.toEntity());
-            return ServerResponse.positive(presenceOnLectureDto.toEntity());
+            PresenceOnLecture existingPresenceOmLecture = presenceOnLectureRepository.findByPresenceDateAndHourTimeRoomAndStudent(presenceOnLectureDto.getPresenceDate(), presenceOnLectureDto.getHourTime(), presenceOnLectureDto.getRoom(), presenceOnLectureDto.getStudent());
+
+            if (existingPresenceOmLecture != null) {
+                return ServerResponse.positive(existingPresenceOmLecture);
+            }
+            PresenceOnLecture presenceOnLecture = presenceOnLectureRepository.save(presenceOnLectureDto.toEntity());
+            return ServerResponse.positive(presenceOnLecture);
+
         }
     }
 
@@ -65,12 +71,12 @@ public class PresenceOnLectureController {
     }
 
     @GetMapping(value = "/presenceOnLectures/{id}")
-    public List<PresenceOnLecture> findAllByLecture_Id(@PathVariable("id") Integer id){
+    public List<PresenceOnLecture> findAllByLecture_Id(@PathVariable("id") Integer id) {
         return presenceOnLectureRepository.findAllByLecture_Id(id);
     }
 
     @GetMapping(value = "/presenceOnLectures/{studentId}/{lectureId}")
-    public List<PresenceOnLecture>findAllByStudent_IdAndLecture_Id(@PathVariable("studentId") Integer studentId,@PathVariable("lectureId") Integer lectureId){
+    public List<PresenceOnLecture> findAllByStudent_IdAndLecture_Id(@PathVariable("studentId") Integer studentId, @PathVariable("lectureId") Integer lectureId) {
         return presenceOnLectureRepository.findAllByStudent_IdAndLecture_Id(studentId, lectureId);
     }
 
