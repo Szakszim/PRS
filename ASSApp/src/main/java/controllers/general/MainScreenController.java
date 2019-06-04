@@ -11,6 +11,7 @@ import entities.Lecture;
 import entities.PresenceOnLecture;
 import entities.Student;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -95,7 +97,7 @@ public class MainScreenController implements Initializable {
     private TableColumn<StudentDto, String> emailColumn;
 
     @FXML
-    private TableColumn<StudentDto, Boolean> wasLateColumn;
+    private TableColumn<StudentDto, String> wasLateColumn;
 
 
     @FXML
@@ -133,6 +135,9 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private TextField totalPresenceTextField;
+
+    @FXML
+    private PieChart diagram;
 
     //TODO: to trzeba będzie zmienić na StudentDto oraz PresenceOnLectureDto
     private static HashMap<String, StudentDto> studentHashMap;
@@ -181,7 +186,8 @@ public class MainScreenController implements Initializable {
         filterStudentStatistics();
 
         cancelButton.setDisable(Boolean.TRUE);
-        cancelButton.setVisible(Boolean.FALSE);
+//        cancelButton.setVisible(Boolean.FALSE);
+        datePicker.setValue(DateUtil.toLocalDate(new Date()));
 
     }
 
@@ -306,20 +312,34 @@ public class MainScreenController implements Initializable {
         String name = nameAndSurname.split(" ")[0];
         String surname = nameAndSurname.split(" ")[1];
         Student student = studentRequest.findByFirstNameAndLastName(name, surname);
-        Integer frequencyCounter = presenceOnLectureRequest.findAllByStudent_IdAndLecture_Id(student.getId(), temporaryLectureId).size();
-        presentTextField.setText(Integer.toString(frequencyCounter));
+
+        Integer frequencyCounter =0;
+        Integer absenceCounter =0;
+        Integer totalPresenceCounter =0;
+
+        frequencyCounter = presenceOnLectureRequest.findAllByStudent_IdAndLecture_Id(student.getId(), temporaryLectureId).size();
+
         List<PresenceOnLecture> totalPresenceList = presenceOnLectureRequest.findAllByLecture_Id(temporaryLectureId);
         Set<String> uniqueDates = new HashSet<>();
         for (PresenceOnLecture p : totalPresenceList) {
             uniqueDates.add(p.getPresenceDate().toString() + p.getHourTime());
         }
-        Integer totalPresenceCounter = uniqueDates.size();
-        totalPresenceTextField.setText(Integer.toString(totalPresenceCounter));
-        if (!(totalPresenceCounter < frequencyCounter)) {
-            absentTextField.setText(Integer.toString(totalPresenceCounter - frequencyCounter));
-        } else {
-            absentTextField.setText("0");
+        totalPresenceCounter = uniqueDates.size();
+
+        if(!(totalPresenceCounter < frequencyCounter)){
+            absenceCounter = totalPresenceCounter - frequencyCounter;
         }
+
+        ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("Obecność", frequencyCounter),
+                        new PieChart.Data("Nieobecność", absenceCounter));
+
+        diagram.setData(pieChartData);
+
+        presentTextField.setText(Integer.toString(frequencyCounter));
+        absentTextField.setText(Integer.toString(absenceCounter));
+        totalPresenceTextField.setText(Integer.toString(totalPresenceCounter));
     }
 
     private void initializeDateList() {
@@ -399,9 +419,17 @@ public class MainScreenController implements Initializable {
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<StudentDto, String>("eMail")
         );
-        wasLateColumn.setCellValueFactory(
-                new PropertyValueFactory<StudentDto, Boolean>("isLate")
-        );
+        wasLateColumn.setCellValueFactory(cellData -> {
+            boolean indicator = cellData.getValue().getIsLate();
+            String indicatorAsString;
+            indicatorAsString = indicator == Boolean.TRUE ? "TAK" : "NIE";
+//            if (indicator == true) {
+//                indicatorAsString = "Male";
+//            } else {
+//                indicatorAsString = "Female";
+//            }
+            return new ReadOnlyStringWrapper(indicatorAsString);
+        });
     }
 
     private void initializeStudentsData() {
@@ -476,10 +504,10 @@ public class MainScreenController implements Initializable {
 
             if (listeningButtonPressed) {
 
-                cancelButton.setVisible(Boolean.TRUE);
+//                cancelButton.setVisible(Boolean.TRUE);
                 cancelButton.setDisable(Boolean.FALSE);
 
-                openLastButton.setVisible(Boolean.FALSE);
+//                openLastButton.setVisible(Boolean.FALSE);
                 openLastButton.setDisable(Boolean.TRUE);
 
                 setDisableFields(true);
@@ -599,9 +627,9 @@ public class MainScreenController implements Initializable {
         startListeningButton.setText("Sprawdź obecność");
 
         cancelButton.setDisable(Boolean.TRUE);
-        cancelButton.setVisible(Boolean.FALSE);
+//        cancelButton.setVisible(Boolean.FALSE);
 
-        openLastButton.setVisible(Boolean.TRUE);
+//        openLastButton.setVisible(Boolean.TRUE);
         openLastButton.setDisable(Boolean.FALSE);
 
         setDisableFields(false);

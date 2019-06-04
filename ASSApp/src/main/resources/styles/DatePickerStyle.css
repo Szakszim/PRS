@@ -1,3 +1,16 @@
+.date-picker > .arrow-button {
+    /*-fx-background-image: url("/icons/calendar.png"); !* Url of the icon *!*/
+    /*-fx-background-size: 60% 60%; !* Can be `cover` or `100% 100%` ect. *!*/
+    /*-fx-background-repeat: no-repeat;*/
+    /*-fx-background-position: center center; !* Put the icon in the center *!*/
+
+    -fx-border-insets: 0 0 0 -1;
+    -fx-background-color: rgb(255,255,255);
+    -fx-border-style: solid;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: rgb(52,168,219);
+}
+
 .date-picker-popup {
     -fx-padding: 1;
     -fx-background-color: #dddddd;
@@ -12,7 +25,7 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 0, 0, 0;
     -fx-background-insets: 0, 0, 0;
-    -fx-border-color: #bfbfbf;
+    -fx-border-color: rgb(52,168,219);
 }
 
 .date-picker:focused > .text-field,
@@ -27,7 +40,7 @@
 
 .date-picker-popup > .month-year-pane {
     -fx-padding: 4;
-    -fx-background-color: #ff0000;
+    -fx-background-color: rgb(28, 28, 113);
 }
 
 .date-picker-popup > .month-year-pane > .spinner {
@@ -105,20 +118,20 @@
 }
 
 .date-picker-popup > * > .day-cell:focused {
-    -fx-background-color: #ff0000;
+    -fx-background-color: rgb(28, 28, 113);
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
 }
 
 .date-picker-popup > * > .day-cell:hover {
-    -fx-background-color: #ff0000;
+    -fx-background-color: rgb(28, 28, 113);
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
 }
 
 .date-picker-popup > * > .day-cell > .secondary-text {
     -fx-font-size: 1.0em;
-    -fx-fill: #ff5050;
+    -fx-border-color: rgb(33, 33, 137);
 }
 
 .date-picker-popup > * > .today {
@@ -129,7 +142,7 @@
 }
 
 .date-picker-popup > * > .today:focused {
-    -fx-background-color: #ff0000;
+    -fx-background-color: rgb(28, 28, 113);
     -fx-font-weight: bold;
     -fx-text-fill: #ffffff;
 }

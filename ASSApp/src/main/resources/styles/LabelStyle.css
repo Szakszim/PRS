@@ -6,7 +6,7 @@
 }
 
 .label{
-    -fx-text-fill: black;
+    -fx-text-fill: #3f3f3f;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
     -fx-text-transform: uppercase;

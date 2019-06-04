@@ -1,5 +1,5 @@
 .text-field{
-    -fx-text-fill: black;
+    -fx-text-fill: #3f3f3f;
     -fx-font-size:12px;
 
     -fx-border-insets: -1,-1,-1,-1;

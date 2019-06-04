@@ -2,6 +2,7 @@ package controllers.general;
 
 import dtos.StudentDto;
 import entities.PresenceOnLecture;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,7 +44,7 @@ public class DetailedStudentsPresenceController implements Initializable {
     private TableColumn<StudentDto, String> emailColumn;
 
     @FXML
-    private TableColumn<StudentDto, Boolean> wasLateColumn;
+    private TableColumn<StudentDto, String> wasLateColumn;
 
 
     private static ObservableList<StudentDto> students;
@@ -85,16 +86,24 @@ public class DetailedStudentsPresenceController implements Initializable {
         emailColumn.setCellValueFactory(
                 new PropertyValueFactory<StudentDto, String>("eMail")
         );
-        wasLateColumn.setCellValueFactory(
-                new PropertyValueFactory<StudentDto, Boolean>("isLate")
-        );
+        wasLateColumn.setCellValueFactory(cellData -> {
+            boolean indicator = cellData.getValue().getIsLate();
+            String indicatorAsString;
+            indicatorAsString = indicator == Boolean.TRUE ? "TAK" : "NIE";
+//            if (indicator == true) {
+//                indicatorAsString = "Male";
+//            } else {
+//                indicatorAsString = "Female";
+//            }
+            return new ReadOnlyStringWrapper(indicatorAsString);
+        });
     }
 
-    public void initData(String date, String hour, String room){
+    public void initData(String date, String hour, String room) {
         students = FXCollections.observableArrayList();
         List<PresenceOnLecture> presenceOnLecture =
-                presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(date,hour,room);
-        for (PresenceOnLecture p : presenceOnLecture){
+                presenceOnLectureRequest.findAllByPresenceDateAndHourTimeAndRoom(date, hour, room);
+        for (PresenceOnLecture p : presenceOnLecture) {
             StudentDto studentDto = new StudentDto(p.getStudent());
             studentDto.setIsLate(p.getWasLate());
             studentDto.setCardId(cardRequest.findCardByStudent_Id(studentDto.getId()).getId());

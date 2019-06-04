@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import requests.LecturerRequest;
+import utils.PasswordAuthentication;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,9 +58,11 @@ public class LoginScreenController implements Initializable {
     }
 
     private void login() throws IOException {
+
         String email = eMailField.getText();
         String password = passwordField.getText();
-        if (validateData("pan.pawel@put.poznan.pl", "Palec123")) {
+
+        if (validateData(email, password)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/general/MainScreen.fxml"));
             AnchorPane anchorPane = loader.load();
             Scene scene = new Scene(anchorPane);

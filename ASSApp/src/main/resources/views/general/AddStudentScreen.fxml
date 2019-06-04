@@ -80,12 +80,12 @@
                   <Font name="Cambria Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="studentIndexField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" />
-            <TextField fx:id="studentNameField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <TextField fx:id="studentSurnameField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextField fx:id="studentIndexField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" styleClass="text-field" stylesheets="/styles/TextFieldStyle.css"/>
+            <TextField fx:id="studentNameField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="text-field" stylesheets="/styles/TextFieldStyle.css"/>
+            <TextField fx:id="studentSurnameField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="text-field" stylesheets="/styles/TextFieldStyle.css"/>
             <ChoiceBox fx:id="studentFacultyChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="6" />
             <ChoiceBox fx:id="studentDeanGroupChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-            <TextField fx:id="studentEmailField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <TextField fx:id="studentEmailField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="10" styleClass="text-field" stylesheets="/styles/TextFieldStyle.css"/>
             <Button mnemonicParsing="false" onAction="#onSaveButtonAction" text="Zapisz" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
          </children>
       </GridPane>
